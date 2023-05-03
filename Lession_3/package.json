@@ -1,0 +1,21 @@
+{
+  "name": "lession_2",
+  "version": "1.0.0",
+  "description": "Lession 2 using Express",
+  "main": "app17.js",
+  "scripts": {
+    "start": "node app17.js",
+    "test": "NVNT"
+  },
+  "keywords": [
+    "NVNT",
+    "NODE",
+    "EXPRESS"
+  ],
+  "author": "NTNT",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
