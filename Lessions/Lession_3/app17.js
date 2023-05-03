@@ -28,4 +28,8 @@ app.get("/json", function(req, res) {
 
 app.use(express.static(path.join(__dirname+"")));
 
+//using sub-set route
+app.use("static", express.static(path.join(__dirname + "public")));
+//=> access by static not public: change name => group and orginaze source codes
+
 console.log("3. Start App");
