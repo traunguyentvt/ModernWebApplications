@@ -9,7 +9,7 @@ const path = require("path");
 
 const express = require("express");
 const app = express();
-const serve = app.listen(process.env.PORT_NUMBER, function() {
+const serve = app.listen(process.env.PORT_NUMBER_HTTP, function() {
     console.log("Listening to port:", serve.address().port);
 });
 
