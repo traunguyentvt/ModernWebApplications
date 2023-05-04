@@ -1,0 +1,22 @@
+{
+  "name": "meangames",
+  "version": "1.0.0",
+  "description": "This is the MEAN Games using Express Server.",
+  "main": "meanGames.js",
+  "scripts": {
+    "start": "node meanGames.js",
+    "test": "Test MEAN Games application."
+  },
+  "keywords": [
+    "NODE",
+    "EXPRESS",
+    "SERVER",
+    "API"
+  ],
+  "author": "TrauNguyen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
