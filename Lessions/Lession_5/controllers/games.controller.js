@@ -1,8 +1,12 @@
 
-require("dotenv").config();
+// require("dotenv").config();
+// const { off } = require("process");
 // const gameData = require("../data/games.json");
 
 const dbConnection = require("../data/dbconnection");
+const ObjectId = require("mongodb").ObjectId;
+
+const callbackify = require("util").callbackify;
 
 module.exports.getAll = function(req, res) {
     console.log("GET All received");
@@ -17,14 +21,29 @@ module.exports.getAll = function(req, res) {
     }
     if (req.query && req.query.count) {
         count = parseInt(req.query.count);
-        if (count > 8) {
-            count = 8;
-        }
+        // if (count > 8) {
+        //     count = 8;
+        // }
     }
     console.log("offset =", offset, "count = ", count, "offset+count", offset+count);
 
     const gameCollection = db.collection(process.env.GAMES_COLLECTION);
-    gameCollection.find({}).skip(offset).limit(count).toArray().then(function(games) {
+
+    //promise way
+    // gameCollection.find({}).skip(offset).limit(count).toArray().then(function(games) {
+    //     res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(games);
+    // });
+
+    //call back way
+    // const myConnect = function(offset, count) {
+    //     return gameCollection.find().skip(offset).limit(count).toArray();
+    // }
+    // const findWithCallback = callbackify(myConnect);
+
+    const findWithCallback = callbackify(function(offset, count) {
+        return gameCollection.find({}).skip(offset).limit(count).toArray();
+    });
+    findWithCallback(offset, count, function(err, games) {
         res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(games);
     });
 };
@@ -33,16 +52,26 @@ module.exports.getGame = function(req, res) {
     const gameId = req.params.gameId;
     console.log("gameId =", gameId);
 
-    const ObjectId = require("mongodb").ObjectId;
-    const gameObject = new ObjectId(gameId);
-    console.log("gameObject =", gameObject);
+    // const ObjectId = require("mongodb").ObjectId;
+    // const gameObject = new ObjectId(gameId);
+    // console.log("gameObject =", gameObject);
 
     const db = dbConnection.get();
     const gameCollection = db.collection(process.env.GAMES_COLLECTION);
-    gameCollection.findOne({"_id" : gameObject}).then(function(game) {
+
+    const findWithCallback = callbackify(function(gameId) {
+        return gameCollection.findOne({"_id" : new ObjectId(gameId)});
+    });
+
+    findWithCallback(gameId, function(err, game) {
         console.log("Found game", game);
         res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(game);
     });
+
+    // gameCollection.findOne({"_id" : gameObject}).then(function(game) {
+    //     console.log("Found game", game);
+    //     res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(game);
+    // });
 };
 
 module.exports.addGame = function(req, res) {
@@ -60,10 +89,19 @@ module.exports.addGame = function(req, res) {
         const db = dbConnection.get();
         const gamesCollection = db.collection(process.env.GAMES_COLLECTION);
 
-        gamesCollection.insertOne(newGame).then(function(response) {
+        const addWithCallback = callbackify(function(newGame) {
+            return gamesCollection.insertOne(newGame);
+        });
+
+        addWithCallback(newGame, function(err, response) {
             console.log(response);
             res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(response);
         });
+
+        // gamesCollection.insertOne(newGame).then(function(response) {
+        //     console.log(response);
+        //     res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(response);
+        // });
     } else {
         res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json({error : process.env.MESSAGE_MISSING_PARAMETERS});
     }
@@ -74,17 +112,28 @@ module.exports.removeGame = function(req, res) {
         const gameId = req.body.gameId;
         console.log("gameId =", gameId);
 
-        const ObjectId = require("mongodb").ObjectId;
-        const gameObject = new ObjectId(gameId);
-        console.log("gameObject =", gameObject);
+        // const ObjectId = require("mongodb").ObjectId;
+        // const gameObject = new ObjectId(gameId);
+        // console.log("gameObject =", gameObject);
 
         const db = dbConnection.get();
         const gameCollection = db.collection(process.env.GAMES_COLLECTION);
 
-        gameCollection.deleteOne({"_id" : gameObject}).then(function(game) {
-            console.log("Delete game", game);
+        const removeWithCallback = callbackify(function(gameId) {
+            return gameCollection.deleteOne({"_id" : new ObjectId(gameId)});
+        });
+
+        //use callback way
+        removeWithCallback(gameId, function(err, response) {
+            console.log("Delete game", response);
             res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json({message : process.env.MESSAGE_DELETE_SUCCESSFULLY});
         });
+
+        //use promise way
+        // gameCollection.deleteOne({"_id" : gameObject}).then(function(game) {
+        //     console.log("Delete game", game);
+        //     res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json({message : process.env.MESSAGE_DELETE_SUCCESSFULLY});
+        // });
     } else {
         res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json({error : process.env.MESSAGE_MISSING_PARAMETERS});
     }

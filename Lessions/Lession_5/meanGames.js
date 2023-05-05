@@ -1,6 +1,8 @@
 
 require("dotenv").config();
+
 require("./data/dbconnection").open();
+// require("./data/db");
 
 const express = require("express");
 const path = require("path");

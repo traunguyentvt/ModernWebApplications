@@ -1,6 +1,4 @@
 
-require("dotenv").config();
-
 module.exports.multiplyNumber = function(req, res) {
     console.log("GET multiplying received");
     let number1 = parseInt(req.params.number1);

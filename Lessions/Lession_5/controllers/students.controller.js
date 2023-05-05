@@ -1,5 +1,5 @@
 
-require("dotenv").config();
+
 const studentData = require("../data/school.json");
 
 const StudentsController = {
