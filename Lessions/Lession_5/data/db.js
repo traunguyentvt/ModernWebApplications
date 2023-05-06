@@ -7,9 +7,9 @@ mongoose.connection.on("connected", function() {
     console.log("Mongoose connected " + process.env.DB_NAME);
 });
 
-// mongoose.connection.on("disconnected", function() {
-//     console.log("Mongoose disconnected");
-// });
+mongoose.connection.on("disconnected", function() {
+    console.log("Mongoose disconnected");
+});
 
 mongoose.connection.on("error", function(err) {
     console.log("Mongoose connected err", err);

@@ -1,16 +1,14 @@
-
 require("dotenv").config();
 
-require("./data/dbconnection").open();
-// require("./data/db");
+require("./data/dbConnection").open();
 
 const express = require("express");
-const path = require("path");
 const app = express();
+const path = require("path");
 const routes = require("./routes");
 
 app.use(express.json());
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({ extended : true }));
 
 const server = app.listen(process.env.PORT, function() {
     console.log("Listening to Port", server.address().port);
