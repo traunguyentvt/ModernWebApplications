@@ -1,0 +1,26 @@
+{
+  "name": "music_php",
+  "version": "1.0.0",
+  "description": "Music_PHP is the Personal Hobby Project using NodeJS, Express Server, MongoDB and Angular.",
+  "main": "meanMusic.js",
+  "scripts": {
+    "start": "node meanMusic.js",
+    "test": "This is the Personal Hobby Project."
+  },
+  "keywords": [
+    "NODEJS",
+    "EXPRESS",
+    "API",
+    "MONGODB",
+    "MONGOOSE",
+    "ANGULAR"
+  ],
+  "author": "TrauNguyen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.0",
+    "nodemon": "^2.0.22"
+  }
+}
