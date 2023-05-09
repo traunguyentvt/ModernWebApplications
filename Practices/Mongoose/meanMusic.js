@@ -1,17 +1,16 @@
-
 require("dotenv").config();
 require("./data/db");
 
+const path = require("path");
 const express = require("express");
 const app = express();
-const path = require("path");
 const routes = require("./routes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended : true }));
 
-const server = app.listen(process.env.HTTP_PORT, function() {
-    console.log(process.env.LISTENING_TO_PORT_MESSAGE, server.address().port);
+const server = app.listen(process.env.PORT, function() {
+    console.log("Listening to Port", server.address().port);
 });
 
 app.use(function(req, res, next) {
@@ -19,6 +18,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(path.join(__dirname + process.env.PUBLIC_DIRECTORY)));
+app.use(express.static(path.join(__dirname + "/public")));
 
-app.use(process.env.ROUTE_API, routes);
+app.use("/api", routes);

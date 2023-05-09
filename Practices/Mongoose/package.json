@@ -1,0 +1,26 @@
+{
+  "name": "mongoose",
+  "version": "1.0.0",
+  "description": "This is a project to practice Mongoose",
+  "main": "meanMusic.js",
+  "scripts": {
+    "start": "node meanMusic.js",
+    "test" : "NVNT"
+  },
+  "keywords": [
+    "NODE",
+    "SERVER",
+    "API",
+    "EXPRESS",
+    "MONGODB",
+    "MONGOOSE"
+  ],
+  "author": "TrauNguyen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.0",
+    "nodemon": "^2.0.22"
+  }
+}

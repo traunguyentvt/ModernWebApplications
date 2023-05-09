@@ -1,6 +1,6 @@
 
 const mongoose = require("mongoose");
-const Song = mongoose.model(process.env.SONG_MODEL);
+const Song = mongoose.model(process.env.DB_SONG_MODEL);
 const callbackify = require("util").callbackify;
 
 module.exports.getAll = function(req, res) {
@@ -21,7 +21,7 @@ module.exports.getAll = function(req, res) {
 
     const maxCount = parseInt(process.env.DEFAULT_MAX_FIND_LIMIT, 10);
     if (count > maxCount) {
-        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE});
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE + maxCount});
         return;
     }
 
@@ -29,88 +29,157 @@ module.exports.getAll = function(req, res) {
         return Song.find().skip(offset).limit(count).exec();
     });
     findWithCallback(offset, count, function(err, songs) {
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_OK), message : songs};
         if (err) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(err);
-        } else {
-            res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(songs);
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         }
+        _sendResponse(response, res);
     });
 }
 
 module.exports.getOne = function(req, res) {
     const songId = req.params.songId;
+    if (!songId) {
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.SONG_ID_IS_MISSING});
+        return;
+    }
+
     const findWithCallback = callbackify(function(songId) {
         return Song.findById(songId).exec();
     });
     findWithCallback(songId, function(err, song) {
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_OK), message : song};
         if (err) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(err);
-            return;
-        } else if (!song) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_NOT_FOUND)).json({ message : process.env.SONG_ID_NOT_FOUND_MESSAGE});
-        } else {
-            res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(song);
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         }
+        _sendResponse(response, res);
     });
 }
 
 module.exports.addOne = function(req, res) {
+    if (!req.body) {
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.PARAMETERS_ARE_MISSING});
+        return;
+    }
+
     const newSong = {
         title : req.body.title,
-        duration : req.body.duration,
+        duration : parseInt(req.body.duration),
         artists : []
     };
+    if (req.body.artists) {
+        newSong.artists = req.body.artists;
+    }
+
     const addWithCallback = callbackify(function(newSong) {
         return Song.create(newSong);
     });
     addWithCallback(newSong, function(err, song) {
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_CREATED), message : song};
         if (err) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(err);
-        } else {
-            res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(song);
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         }
+        _sendResponse(response, res);
     });
-}
-
-module.exports.fullUpdateOne = function(req, res) {
-    const songId = req.params.songId;
-    const updatedSong = {
-        title : req.body.title,
-        duration : req.body.duration
-    };
-    const fullUpdateWithCallback = callbackify(function(songId, updatedSong) {
-        return Song.findByIdAndUpdate(songId, updatedSong).exec();
-    });
-    fullUpdateWithCallback(songId, updatedSong, function(err, song) {
-        if (err) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(err);
-            return;
-        } else if (!song) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_NOT_FOUND)).json({ message : process.env.SONG_ID_NOT_FOUND_MESSAGE});
-        } else {
-            updatedSong._id = songId;
-            res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json({result : process.env.HTTP_RESULT});
-        }
-    });
-}
-
-module.exports.partialUpdateOne = function(req, res) {
-
 }
 
 module.exports.deleteOne = function(req, res) {
     const songId = req.params.songId;
+    if (!songId) {
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.SONG_ID_IS_MISSING});
+        return;
+    }
+
     const deleteWithCallback = callbackify(function(songId) {
         return Song.findByIdAndDelete(songId).exec();
     });
     deleteWithCallback(songId, function(err, song) {
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_UPDATED), message : song};
         if (err) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(err);
-            return;
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         } else if (!song) {
-            res.status(parseInt(process.env.HTTP_RESPONSE_NOT_FOUND)).json({ message : process.env.SONG_ID_NOT_FOUND_MESSAGE});
-        } else {
-            res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json({result : process.env.HTTP_RESULT});
+            _setInternalResponse(response, { message : process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND));
         }
+        _sendResponse(response, res);
     });
+}
+
+const _updateOne = function(req, res, updateCallback) {
+    const songId = req.params.songId;
+    if (!songId) {
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.SONG_ID_IS_MISSING});
+        return;
+    }
+    if (!req.body) {
+        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.PARAMETERS_ARE_MISSING});
+        return;
+    }
+
+    const findWithCallback = callbackify(function(songId) {
+        return Song.findById(songId).exec();
+    });
+    findWithCallback(songId, function(err, song) {
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_OK), message : song};
+        if (err) {
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
+        } else if (!song) {
+            _setInternalResponse(response, { message : process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND));
+        }
+        if (parseInt(process.env.HTTP_RESPONSE_OK) != response.status) {
+            _sendResponse(response, res);
+            return;
+        }
+        updateCallback(req, res, song, response);
+    });
+}
+
+module.exports.fullUpdateOne = function(req, res) {
+    const fullUpdate = function(req, res, song, response) {
+        song.title = req.body.title;
+        song.duration = parseInt(req.body.duration);
+        song.artists = req.body.artists;
+
+        _saveSong(res, song, response);
+    };
+    _updateOne(req, res, fullUpdate);
+}
+
+module.exports.partialUpdateOne = function(req, res) {
+    const partialUpdate = function(req, res, song, response) {
+        if (req.body.title) {
+            song.title = req.body.title;
+        }
+        if (req.body.duration) {
+            song.duration = parseInt(red.body.duration);
+        }
+        if (red.body.artists) {
+            song.artists = req.body.artists;
+        }
+
+        _saveSong(res, song, response);
+    };
+    _updateOne(req, res, partialUpdate);
+}
+
+const _saveSong = function(res, song, response) {
+    const saveWithCallback = callbackify(function(song) {
+        return song.save();
+    });
+    saveWithCallback(song, function(err, updatedSong) {
+        if (err) {
+            _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
+        } else {
+            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_UPDATED));
+        }
+        _sendResponse(response, res);
+    });
+}
+
+const _setInternalResponse = function(response, data, code) {
+    response.status = code;
+    response.message = data;
+}
+
+const _sendResponse = function(response, res) {
+    res.status(response.status).json(response.message);
 }
