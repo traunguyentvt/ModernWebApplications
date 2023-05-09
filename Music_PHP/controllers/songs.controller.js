@@ -64,7 +64,7 @@ module.exports.addOne = function(req, res) {
 
     const newSong = {
         title : req.body.title,
-        duration : parseInt(req.body.duration),
+        duration : parseInt(req.body.duration, 10),
         artists : []
     };
     if (req.body.artists) {
@@ -94,7 +94,7 @@ module.exports.deleteOne = function(req, res) {
         return Song.findByIdAndDelete(songId).exec();
     });
     deleteWithCallback(songId, function(err, song) {
-        const response = {status: parseInt(process.env.HTTP_RESPONSE_UPDATED), message : song};
+        const response = {status: parseInt(process.env.HTTP_RESPONSE_OK), message : song};
         if (err) {
             _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         } else if (!song) {
@@ -136,7 +136,7 @@ const _updateOne = function(req, res, updateCallback) {
 module.exports.fullUpdateOne = function(req, res) {
     const fullUpdate = function(req, res, song, response) {
         song.title = req.body.title;
-        song.duration = parseInt(req.body.duration);
+        song.duration = parseInt(req.body.duration, 10);
         song.artists = req.body.artists;
 
         _saveSong(res, song, response);
@@ -150,9 +150,9 @@ module.exports.partialUpdateOne = function(req, res) {
             song.title = req.body.title;
         }
         if (req.body.duration) {
-            song.duration = parseInt(red.body.duration);
+            song.duration = parseInt(req.body.duration, 10);
         }
-        if (red.body.artists) {
+        if (req.body.artists) {
             song.artists = req.body.artists;
         }
 
@@ -169,7 +169,7 @@ const _saveSong = function(res, song, response) {
         if (err) {
             _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         } else {
-            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_UPDATED));
+            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK));
         }
         _sendResponse(response, res);
     });

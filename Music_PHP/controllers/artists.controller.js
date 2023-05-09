@@ -110,7 +110,7 @@ module.exports.artirstsAddOne = function(req, res) {
 const _addArtist = function(req, res, song, response) {
     const artist = {
         name : req.body.name,
-        age : parseInt(req.body.age)
+        age : parseInt(req.body.age, 10)
     };
     song.artists.push(artist);
     const saveWithCallback = callbackify(function(artist) {
@@ -138,7 +138,7 @@ module.exports.artirstsPartialUpdateOne = function(req, res) {
             artist.name = req.body.name;
         }
         if (req.body.age) {
-            artist.age = parseInt(req.body.age);
+            artist.age = parseInt(req.body.age, 10);
         }
         _saveArtist(song, res, response);
     };
@@ -181,7 +181,7 @@ module.exports.artirstsFullUpdateOne = function(req, res) {
             return;
         }
         artist.name = req.body.name;
-        artist.age = parseInt(req.body.age);
+        artist.age = parseInt(req.body.age, 10);
         _saveArtist(song, res, response);
     };
     _updateOne(req, res, fullUpdate);
@@ -243,6 +243,7 @@ module.exports.artirstsFullUpdateOne = function(req, res) {
 
 const _updateOne = function(req, res, updateCallback) {
     const songId = req.params.songId;
+    const artistId = req.params.artistId;
     if (!songId) {
         res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.SONG_ID_IS_MISSING});
         return;
@@ -259,7 +260,7 @@ const _updateOne = function(req, res, updateCallback) {
     const findSongWithCallback = callbackify(function(songId, artistId) {
         return Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec();
     });
-    findSongWithCallback(songId, artistsId, function(err, song) {
+    findSongWithCallback(songId, artistId, function(err, song) {
         const response = {status:parseInt(process.env.HTTP_RESPONSE_OK), message:song};
         if (err) {
             _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
@@ -283,7 +284,7 @@ const _saveArtist = function(song, res, response) {
         if (err) {
             _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         } else {
-            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_UPDATED));
+            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK));
         }
         _sendResponse(response, res);
     });
@@ -346,7 +347,7 @@ const _removeArtist = function(res, artistId, song, response) {
         if (err) {
             _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
         } else {
-            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_UPDATED));
+            _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK));
         }
         _sendResponse(response, res);
     });
