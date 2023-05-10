@@ -1,0 +1,23 @@
+{
+  "name": "meangames",
+  "version": "1.0.0",
+  "description": "This is the project using Mongoose",
+  "main": "meanGames.js",
+  "scripts": {
+    "start": "node meanGames.js",
+    "test": "NVNT"
+  },
+  "keywords": [
+    "NODE",
+    "EXPRESS",
+    "MONGOOSE"
+  ],
+  "author": "TrauNguyen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.0",
+    "nodemon": "^2.0.22"
+  }
+}

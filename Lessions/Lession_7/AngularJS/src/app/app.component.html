@@ -1,0 +1,44 @@
+1 + 2 = {{1 + 2}}
+<br/>
+{{"TV" + "T"}}
+<br/>
+<ul>
+  <li *ngFor="let name of people">{{name}}</li>
+</ul>
+<button (click)="onClickBtn()">Click</button>
+<br/>
+{{title}}
+<br/>
+<select>
+  <option *ngFor="let s of students">{{s.name}}</option>
+</select>
+<br/>
+{{12345 | currency}}
+<br/>
+{{12345 | currency:"&"}}
+<br/>
+{{today | date}}
+<br/>
+{{today | date:"short"}}
+<br/>
+{{today | date:"medium"}}
+<br/>
+{{today | date:"long"}}
+<br/>
+{{today | date:"MM-dd-yyyy hh:mm:ss"}}
+<br/>
+{{students | json}}
+<br/>
+{{"tvt-ane" | uppercase}}
+<br/>
+{{"ant-tvt" | lowercase}}
+<br/>
+{{123.456789 | number:"1.0-5"}}
+<br/>
+{{123.456789 | number:"4.0-2"}}
+<br/>
+{{123.456789 | number:"4.0-20"}}
+<br/>
+{{123.456789 | number:"4.10-20"}}
+
+
