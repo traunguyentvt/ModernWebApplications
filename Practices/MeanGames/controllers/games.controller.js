@@ -20,10 +20,33 @@ module.exports.getAll = function(req, res) {
     const lng = parseFloat(req.query.lng);
     const lat = parseFloat(req.query.lat);
     //Geo JSON Point
-    
+    const point = {type:"Point", coordinates:[lat, lng]};
+    const query = {
+        "publisher.location.coordinates" : {
+            $near : {
+                $geometry: point,
+                $maxDistance: 10000000,
+                $minDistance: 0
+            }
+        }
+    };
     
     const findWithCallback = callbackify(function() {
-        
+        return Game.find(query).exec();
+        // return Game.aggregate([
+        //     {
+        //         "$geoNear" : {
+        //             "near" : point,
+        //             "spherical" : true,
+        //             "distanceField" : "distance",
+        //             "maxDistance" : 1000000,
+        //             "minDistance" : 
+        //         }
+        //     },
+        //     {
+        //         "#limit" : 10000
+        //     }
+        // ]);
     });
     findWithCallback(function(err, games) {
         if (err) {

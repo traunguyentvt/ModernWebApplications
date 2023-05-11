@@ -25,10 +25,10 @@ const publisherSchema = mongoose.Schema({
     },
     country : String,
     established: Number,
-    location: {
-        coordinates: {
+    location : {
+        coordinates : {
             type : [Number],
-            index: "2dsphere"
+            index : "2dsphere"
         }
     }
 });

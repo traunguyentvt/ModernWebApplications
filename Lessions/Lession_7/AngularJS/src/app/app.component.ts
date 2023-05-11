@@ -8,13 +8,16 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'AngularJS';
 
-  people:string[] = ["tvt", "nvnt", "tvi"];
-  students = [{"name":"tv", "age":32}, {"name":"vt", "age":31}, {"name":"aye", age:32}];
+  people = ["vt", "aye", "vt"];
+
+  students = [{name:"vt", type:"aye"}, {name:"tt", type:"me"}];
+
+  btnTitle = "VT";
 
   today = new Date();
 
   onClickBtn() {
-    this.title = "Button Clicked"
+    this.btnTitle = "AYE VT";
   }
 
 }

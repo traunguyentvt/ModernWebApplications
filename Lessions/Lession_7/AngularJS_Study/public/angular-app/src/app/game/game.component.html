@@ -1,0 +1,8 @@
+<H1>{{game.title}} - {{game.rate}} <app-starts-rating [rating]="game.rate"></app-starts-rating> </H1> <br/>
+Year: {{game.year}} <br/>
+Price: {{game.price | currency}} <br/>
+Minimum Players: {{game.minPlayers}} <br/>
+Maximum Players: {{game.maxPlayers}} <br/>
+Minimum Age: {{game.minAge}} <br/><br/>
+
+<button (click)="onDelete(game)">Delete</button>

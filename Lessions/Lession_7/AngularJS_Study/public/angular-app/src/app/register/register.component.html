@@ -1,0 +1,18 @@
+<p>Reactive Forms</p>
+<form [formGroup]="registrationForm" (ngSubmit)="register(registrationForm)">
+    <div>
+        <label>Name: <input formControlName="name" placeholder="Your name"/> </label>
+    </div>
+    <div>
+        <label>Username: <input formControlName="username" placeholder="Username"/> </label>
+    </div>
+    <div>
+        <label>Password: <input type="password" formControlName="password" placeholder="Password"/> </label>
+    </div>
+    <div>
+        <label>Repeat password: <input type="password" formControlName="repeatPassword" placeholder="Password"/> </label>
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>
