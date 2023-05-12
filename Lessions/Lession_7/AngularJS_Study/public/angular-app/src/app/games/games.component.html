@@ -1,8 +1,23 @@
 <!-- <H1>Game List</H1> -->
+<br/>
+<p>
+    Number of games for each page 
+    <select name="currentCount" (change)="pageChanged()" [(ngModel)]="currentCount">
+        <option *ngFor="let number of limitArray">{{number}}</option>
+    </select>
+
+    <label>And search by keyword: <input name="keySearch" placeholder="Search" [(ngModel)]="keySearch" (change)="searchBoxValueChanged()"/></label>
+    <button (click)="onSearch()">Search</button>
+</p>
+
 <ul>
     <li *ngFor="let game of games">
         <a routerLink="/games/{{game._id}}">{{game.title}}</a>
-        {{" "}}
-        <button (click)="onDelete(game)">Delete</button>
+        <!-- {{"  "}}  -->
+        <!-- <button (click)="onDelete(game)">Delete</button> -->
     </li>
 </ul>
+
+<p>
+    <button (click)="addNewGame()">Add New Game</button>
+</p>

@@ -15,6 +15,10 @@ export class GameComponent implements OnInit {
 
   constructor(private _gameService: GameDataService, private _route: ActivatedRoute, private _router: Router) {}
 
+  editGame() {
+    this._router.navigate(["editGame/{{this.game._id}}"]);
+  }
+
   ngOnInit(): void {
     let gameId = this._route.snapshot.params["gameId"];
     this._gameService.getOne(gameId).subscribe({

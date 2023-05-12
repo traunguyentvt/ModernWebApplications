@@ -13,8 +13,13 @@ export class GameDataService {
 
   constructor(private _http:HttpClient) { }
 
-  public getAll():Observable<Game[]> {
-    const url: string = this._baseUrl + "games";
+  public getAll(offset: number, count: number, keySearch: string):Observable<Game[]> {
+    let url: string;
+    if (keySearch) {
+      url = this._baseUrl + "games?offset=" + offset + "&count=" + count + "&keySearch=" + keySearch;
+    } else {
+      url = this._baseUrl + "games?offset=" + offset + "&count=" + count;
+    }
     return this._http.get<Game[]>(url);
   }
 
@@ -26,6 +31,17 @@ export class GameDataService {
   public deleteOne(gameId: string):Observable<void> {
     const url: string = this._baseUrl + "games/" + gameId;
     return this._http.delete<void>(url);
+  }
+
+  public addOne(newGame: any):Observable<Game> {
+    const url: string = this._baseUrl + "games";
+    return this._http.post<Game>(url, newGame);
+  }
+
+  public partialUpdateOne(gameId:string, game: any):Observable<Game> {
+    const url: string = this._baseUrl + "games/" + gameId;
+    console.log(url);
+    return this._http.patch<Game>(url, game);
   }
 
 }

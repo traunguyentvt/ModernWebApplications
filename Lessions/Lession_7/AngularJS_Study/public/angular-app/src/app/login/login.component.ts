@@ -28,7 +28,7 @@ export class LoginComponent {
 
   public login() {
     console.log(this.loginForm.value);
-    console.log(this.user);
+    // console.log(this.user);
   }
 
   constructor() {
@@ -36,10 +36,10 @@ export class LoginComponent {
   }
 
   ngOnInit() {
-    this.user = new Credential("12", "1221");
-    setTimeout(() => {
-      this.loginForm.setValue(this.user);
-    }, 1);
+    this.user = new Credential("", "");
+    // setTimeout(() => {
+    //   this.loginForm.setValue(this.user);
+    // }, 1);
   }
 
 }

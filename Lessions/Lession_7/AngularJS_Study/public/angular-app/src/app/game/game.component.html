@@ -3,6 +3,9 @@ Year: {{game.year}} <br/>
 Price: {{game.price | currency}} <br/>
 Minimum Players: {{game.minPlayers}} <br/>
 Maximum Players: {{game.maxPlayers}} <br/>
-Minimum Age: {{game.minAge}} <br/><br/>
+Minimum Age: {{game.minAge}} <br/>
+Publisher: {{game?.publisher?.name}}<br/><br/>
 
 <button (click)="onDelete(game)">Delete</button>
+
+<button routerLink="/editGame/{{game._id}}">Edit</button>

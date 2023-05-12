@@ -5,6 +5,7 @@ import { GameComponent } from './game/game.component';
 import { ParentComponent } from './parent/parent.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AddNewGameComponent } from './add-new-game/add-new-game.component';
 
 export const AppRoutes = [
     {
@@ -30,6 +31,14 @@ export const AppRoutes = [
     {
         path: "login",
         component: LoginComponent
+    },
+    {
+      path: "addNewGame",
+      component: AddNewGameComponent
+    },
+    {
+      path: "editGame/:gameId",
+      component: AddNewGameComponent
     },
     {
       path : "**",
