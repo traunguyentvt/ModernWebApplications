@@ -13,8 +13,8 @@
 <ul>
     <li *ngFor="let game of games">
         <a routerLink="/games/{{game._id}}">{{game.title}}</a>
-        <!-- {{"  "}}  -->
-        <!-- <button (click)="onDelete(game)">Delete</button> -->
+        {{"  "}}
+        <button (click)="onDelete(game)">Delete</button>
     </li>
 </ul>
 
