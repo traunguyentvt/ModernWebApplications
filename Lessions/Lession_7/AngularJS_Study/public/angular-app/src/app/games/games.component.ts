@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameDataService } from '../game-data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export class Location {
   #coordinates!: [number];
@@ -105,17 +105,33 @@ export class GamesComponent implements OnInit {
   currentCount: number = this.limitArray[0];
   keySearch!: string;
   offset: number = 0;
+  isEndedPage: number = 0;
 
-  constructor(private _gameService: GameDataService, private _router: Router) {
+  constructor(private _gameService: GameDataService, private _router: Router, private _route: ActivatedRoute) {
   }
 
   pageChanged() {
-    console.log(this.currentCount, this.keySearch);
+    this.offset = 0;
+    console.log(this.currentCount, this.keySearch, this.offset);
+    this.loadGames();
+  }
+
+  onPaginate(offset: number) {
+    this.offset = offset;
+    console.log(this.currentCount, this.keySearch, this.offset);
     this.loadGames();
   }
 
   onSearch() {
     console.log(this.currentCount, this.keySearch);
+    this._router.navigate(
+      [],
+      {
+        relativeTo: this._route,
+        queryParams: { keySearch : this.keySearch},
+        queryParamsHandling: "merge"
+      }
+      );
     this.loadGames();
   }
 
@@ -129,6 +145,9 @@ export class GamesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this._route.snapshot.queryParams["keySearch"]) {
+      this.keySearch = this._route.snapshot.queryParams["keySearch"];
+    }
     this.loadGames();
   }
 
@@ -136,6 +155,11 @@ export class GamesComponent implements OnInit {
     this._gameService.getAll(this.offset, this.currentCount, this.keySearch).subscribe({
       next: (games) => {
         this.games = games;
+        if (games.length >= this.currentCount) {
+          this.isEndedPage = 0;
+        } else {
+          this.isEndedPage = 1;
+        }
       },
       error: (error) => {
         console.log(error);
@@ -150,7 +174,11 @@ export class GamesComponent implements OnInit {
     const index = this.games.indexOf(game);
     this._gameService.deleteOne(game._id).subscribe({
       next: () => {
+        //option 1: remove  game from the list
         this.games.splice(index, 1);
+        //option 2: reload page
+        this.loadGames();
+        //=> 
       },
       error: (error) => {
         console.log(error);

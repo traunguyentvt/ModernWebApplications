@@ -22,7 +22,7 @@ module.exports.getAll = function(req, res) {
     // const lat = parseFloat(req.query.lat);
 
     //Geo JSON Point
-    // const point = {type:"Point", coordinates:[lat, lng]};
+    // const point = {type:"Point", coordinates:[lng, lat]};
     // const query = {
     //     "publisher.location.coordinates" : {
     //         $near : {
@@ -46,7 +46,7 @@ module.exports.getAll = function(req, res) {
     
     const findWithCallback = callbackify(function(query) {
         console.log(query);
-        return Game.find(query).skip(offset).limit(count).exec();
+        return Game.find(query).skip(offset*count).limit(count).exec();
 
         // return Game.aggregate([
         //     {

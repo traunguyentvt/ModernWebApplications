@@ -11,7 +11,7 @@ export class GameDataService {
 
   private _baseUrl = "http://localhost:3000/api/";
 
-  constructor(private _http:HttpClient) { }
+  constructor(private _http:HttpClient) {}
 
   public getAll(offset: number, count: number, keySearch: string):Observable<Game[]> {
     let url: string;
@@ -23,22 +23,22 @@ export class GameDataService {
     return this._http.get<Game[]>(url);
   }
 
-  public getOne(gameId: string):Observable<Game> {
+  public getOne(gameId: string): Observable<Game> {
     const url: string = this._baseUrl + "games/" + gameId;
     return this._http.get<Game>(url);
   }
 
-  public deleteOne(gameId: string):Observable<void> {
+  public deleteOne(gameId: string): Observable<void> {
     const url: string = this._baseUrl + "games/" + gameId;
     return this._http.delete<void>(url);
   }
 
-  public addOne(newGame: any):Observable<Game> {
+  public addOne(newGame: any): Observable<Game> {
     const url: string = this._baseUrl + "games";
     return this._http.post<Game>(url, newGame);
   }
 
-  public partialUpdateOne(gameId:string, game: any):Observable<Game> {
+  public partialUpdateOne(gameId:string, game: any): Observable<Game> {
     const url: string = this._baseUrl + "games/" + gameId;
     console.log(url);
     return this._http.patch<Game>(url, game);

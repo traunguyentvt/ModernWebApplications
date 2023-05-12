@@ -1,5 +1,6 @@
 
 require("./games-model");
+require("./users-models");
 const mongoose = require("mongoose");
 const callbackify = require("util").callbackify;
 

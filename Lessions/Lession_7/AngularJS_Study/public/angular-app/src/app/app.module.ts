@@ -18,7 +18,8 @@ import { ChildComponent } from './child/child.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { StartsRatingComponent } from './starts-rating/starts-rating.component';
-import { AddNewGameComponent } from './add-new-game/add-new-game.component'
+import { AddNewGameComponent } from './add-new-game/add-new-game.component';
+import { PaginationComponent } from './pagination/pagination.component'
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { AddNewGameComponent } from './add-new-game/add-new-game.component'
     LoginComponent,
     RegisterComponent,
     StartsRatingComponent,
-    AddNewGameComponent
+    AddNewGameComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
