@@ -1,0 +1,51 @@
+
+//NPM
+Install: npm i npm
+sudo npm init
+
+//BCrypt
+Install: sudo npm install bcrypt
+
+//Express, dotenv, mongoose
+Install: sudo npm install express/dotenv/mongoose/nodemon
+
+//Nodemon
+Install: sudo npm install --g nodemon
+
+//Export MongoDB
+JSON file: mongoexport -d SchoolDB -c students -o students.json --jsonArray --pretty
+
+//Restore MongoDB
+BSON file: mongorestore -gzip dump\
+
+//Dump MongoDB
+BSON file: mongodump --db meanGames --gzip
+
+//Import MongoDB
+JSON: mongoimport --db SchoolDB --collection students -- jsonArray students.json
+
+//Angular CLI
+sudo npm i -g @angular/cli
+
+//Run Express
+nodemon | node meanGame.js
+
+//Run Angular
+sudo npm start
+
+//Angular Generate component/service
+sudo ng generate component/service NAME_SERVICE_COMPONENT
+
+//Create Express app
+npm init
+
+//Create Angular app
+sudo ng new angular-app --skip-tests=true --skip-git=true --directory public/angular-app --defaults=true
+
+//Run TypeScript
+Generate JS file: tsc
+Run JS file: node ./output/NAME.js
+
+
+
+

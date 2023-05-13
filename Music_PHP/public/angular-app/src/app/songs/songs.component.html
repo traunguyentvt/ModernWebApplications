@@ -1,0 +1,7 @@
+<br/>
+
+<ul>
+    <li *ngFor="let song of songs">
+        <a routerLink="/songs/{{song._id}}">{{song.title}}</a>
+    </li>
+</ul>
