@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { MusicDataService } from '../music-data.service';
 import { Song } from '../songs/songs.component';
@@ -13,10 +13,32 @@ export class SongComponent {
 
   song: Song = new Song("", "", 0);
 
-  constructor(private _activeRoute: ActivatedRoute, private _musicService: MusicDataService) {}
+  constructor(private _activeRoute: ActivatedRoute, private _router: Router, private _musicService: MusicDataService) {}
 
   ngOnInit() {
     this.loadSong();
+  }
+
+  onDelete() {
+    if (confirm("Do you want to delete " + this.song.title + "?")) {
+      this._musicService.deleteOne(this.song._id).subscribe({
+        next: (any) => {
+          alert("Delete successfully!");
+          this._router.navigate(["songs"]);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+  
+        }
+      });
+    }
+  }
+
+  onUpdate() {
+    const songId = this.song._id;
+    this._router.navigate(["updatesong/" + songId]);
   }
 
   loadSong() {

@@ -1,27 +1,26 @@
-
 const express = require("express");
 const router = express.Router();
 
-const songController = require("../controllers/songs.controller");
-const artistController = require("../controllers/artists.controller");
+const songController = require("../../controllers/songs.controller");
+const artistController = require("../../controllers/artists.controller");
 
-router.route(process.env.ROUTE_SONGS_SONGID)
+router.route(process.env.ROUTE_SONGID)
     .get(songController.getOne)
     .put(songController.fullUpdateOne)
     .patch(songController.partialUpdateOne)
     .delete(songController.deleteOne);
 
-router.route(process.env.ROUTE_SONGS)
+router.route(process.env.DASH)
     .get(songController.getAll)
     .post(songController.addOne);
 
-router.route(process.env.ROUTE_SONGS_SONGID_ARTISTS_ARTISTID)
+router.route(process.env.ROUTE_SONGID_ARTISTS_ARTISTID)
     .get(artistController.artirstsGetOne)
     .put(artistController.artirstsFullUpdateOne)
     .patch(artistController.artirstsPartialUpdateOne)
     .delete(artistController.artirstsDeleteOne);
 
-router.route(process.env.ROUTE_SONGS_SONGID_ARTISTS)
+router.route(process.env.ROUTE_SONGID_ARTISTS)
     .get(artistController.artirstsGetAll)
     .post(artistController.artirstsAddOne);
 

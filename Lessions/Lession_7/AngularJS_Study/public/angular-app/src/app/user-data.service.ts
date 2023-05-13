@@ -13,7 +13,7 @@ export class UserDataService {
 
   constructor(private _http: HttpClient) {}
 
-  public register(newUser: any): Observable<User> {
+  public register(newUser: Object): Observable<User> {
     const url: string = this._baseUrl + "users";
     console.log(url);
     return this._http.post<User>(url, newUser);

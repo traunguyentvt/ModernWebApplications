@@ -1,0 +1,16 @@
+<br/>
+{{btnTitle}}
+<br/>
+<br/>
+<form [formGroup]="songForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label>Title: <input formControlName="title" placeholder="Title"/></label>
+    </div>
+    <div>
+        <label>Duration: <input formControlName="duration" placeholder="Duration"/></label>
+    </div>
+    <br/>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>

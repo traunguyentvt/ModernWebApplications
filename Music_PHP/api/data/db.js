@@ -2,6 +2,8 @@
 const mongoose = require("mongoose");
 const { callbackify } = require("util");
 require("./songs-model");
+require("./users-model");
+
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser : true, useUnifiedTopology : true });
 

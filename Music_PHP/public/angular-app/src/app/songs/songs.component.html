@@ -1,7 +1,22 @@
 <br/>
-
 <ul>
     <li *ngFor="let song of songs">
-        <a routerLink="/songs/{{song._id}}">{{song.title}}</a>
+        <a routerLink="/songs/{{song._id}}">{{song.title}}  </a>
+        <button (click)="onDelete(song)">Delete</button>
     </li>
 </ul>
+
+Number of songs per page 
+<select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
+    <option *ngFor="let number of limitArray">{{number}}</option>
+</select>
+<label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
+<button (click)="onSearch()">Search</button>
+<p>
+    <app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onPaginate($event)"></app-pagination>
+</p>
+
+<p>
+    <button (click)="addSong()">Add Song</button>
+</p>
+

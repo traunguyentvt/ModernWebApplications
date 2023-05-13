@@ -1,1 +1,13 @@
-<p>login works!</p>
+
+<br/>
+<form #loginForm="ngForm" (ngSubmit)="login()">
+    <div>
+        <label>Username: <input name="username" placeholder="Username" [(ngModel)]="user.username"/></label>
+    </div>
+    <div>
+        <label>Password: <input name="password" type="password" placeholder="Password" [(ngModel)]="user.password"/></label>
+    </div>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>

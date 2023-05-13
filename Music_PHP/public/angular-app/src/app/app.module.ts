@@ -10,10 +10,13 @@ import { HomeComponent } from './home/home.component';
 import { SongsComponent } from './songs/songs.component';
 import { SongComponent } from './song/song.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppRouter } from './app.routes';
+import { PaginationComponent } from './pagination/pagination.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddNewSongComponent } from './add-new-song/add-new-song.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -25,13 +28,17 @@ import { AppRouter } from './app.routes';
     SongsComponent,
     SongComponent,
     NavigationComponent,
-    RegistrationComponent,
     LoginComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    PaginationComponent,
+    AddNewSongComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
     RouterModule.forRoot(AppRouter)
   ],
   providers: [],

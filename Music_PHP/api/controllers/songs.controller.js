@@ -24,9 +24,16 @@ module.exports.getAll = function(req, res) {
         res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE + maxCount});
         return;
     }
+    
+    let query = {};
+    if (req.query && req.query.keySearch) {
+        query = {
+            title: {$regex: req.query.keySearch}
+        };
+    }
 
     const findWithCallback = callbackify(function(offset, limit) {
-        return Song.find().skip(offset).limit(count).exec();
+        return Song.find(query).skip(offset*count).limit(count).exec();
     });
     findWithCallback(offset, count, function(err, songs) {
         const response = {status: parseInt(process.env.HTTP_RESPONSE_OK), message : songs};
