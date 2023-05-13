@@ -72,6 +72,7 @@ export class AddNewGameComponent {
   addGame(form: FormGroup) {
     this._gameService.addOne(form.value).subscribe({
       next: (game) => {
+        alert("Game is created!");
         this._router.navigate(["games"]); //=> how to back game list without creating new GamesComponent just loading API
       },
       error: (error) => {
@@ -86,8 +87,9 @@ export class AddNewGameComponent {
   editGame(form: FormGroup) {
     console.log("Edit game");
     //use fullUpdate. only use partialUpdate when updating each field, not all form
-    this._gameService.partialUpdateOne(this.existedGame._id, form.value).subscribe({
+    this._gameService.fullUpdateOne(this.existedGame._id, form.value).subscribe({
       next: (game) => {
+        alert("Game is saved!");
         const link = "/games/" + this.existedGame._id;
         console.log(link);
         this._router.navigate([link]);

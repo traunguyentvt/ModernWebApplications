@@ -123,6 +123,7 @@ module.exports.fullUpdateOne = function(req, res) {
         game.maxPlayers = req.body.maxPlayers;
         game.minAge = req.body.minAge;
         game.price = req.body.price;
+        game.reviews = [];
 
         _saveGame(res, game, response);
     };

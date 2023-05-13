@@ -35,17 +35,20 @@ export class GameComponent implements OnInit {
   }
 
   onDelete(game: Game) {
-    this._gameService.deleteOne(game._id).subscribe({
-      next: () => {
-        this._router.navigate(["games"]);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log("Completed!");
-      }
-    });
+    if (confirm("Do you want to delete " + game.title + "?")) {
+      this._gameService.deleteOne(game._id).subscribe({
+        next: () => {
+          this._router.navigate(["games"]);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          console.log("Completed!");
+        }
+      });
+    }
+    
   }
 
 }

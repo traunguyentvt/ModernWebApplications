@@ -44,4 +44,10 @@ export class GameDataService {
     return this._http.patch<Game>(url, game);
   }
 
+  public fullUpdateOne(gameId:string, game: any): Observable<Game> {
+    const url: string = this._baseUrl + "games/" + gameId;
+    console.log(url);
+    return this._http.put<Game>(url, game);
+  }
+
 }

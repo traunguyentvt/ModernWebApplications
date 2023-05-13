@@ -171,8 +171,9 @@ export class GamesComponent implements OnInit {
   }
 
   onDelete(game: Game) {
-    const index = this.games.indexOf(game);
-    this._gameService.deleteOne(game._id).subscribe({
+    if (confirm("Do you want to delete " + game.title + "?")) {
+      const index = this.games.indexOf(game);
+      this._gameService.deleteOne(game._id).subscribe({
       next: () => {
         //option 1: remove  game from the list
         this.games.splice(index, 1);
@@ -187,6 +188,8 @@ export class GamesComponent implements OnInit {
         console.log("Completed!");
       }
     });
+    }
+    
   }
 
 }
