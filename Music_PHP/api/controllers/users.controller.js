@@ -36,6 +36,6 @@ const addOne= function(req, res) {
 }
 
 module.exports = {
-    getOne: getOne,
+    getOne,
     registerOne: addOne
 }
