@@ -1,0 +1,22 @@
+<H1>Search Job with skills</H1>
+
+<label>Skills <input name="keySearch" placeholder="Keyword" (change)="onSearchBoxChange()" [(ngModel)]="keySearch"/></label> 
+<button (click)="onSearch()">Search</button>
+<ul>
+    <li *ngFor="let job of jobopenings">
+        <p>
+            {{job.title}} <br/>
+            + Skills: {{job.skills}} <br/>
+            + Location: {{job.location?.name}} <br/>
+            + Postdate: {{job.postDate|date:"MM-dd-yyyy":"+0000"}}
+        </p>
+    </li>
+</ul>
+
+<p></p>
+Number of Jobs per pages
+<select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
+    <option *ngFor="let number of limitArray">{{number}}</option>
+</select>
+<br/>
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onOffsetChange($event)"></app-pagination>

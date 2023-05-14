@@ -1,0 +1,7 @@
+The list of Ships are:<br/>
+
+<ul>
+    <li *ngFor="let ship of ships">
+        <a routerLink="{{ship._id}}">{{ship.depth}} - {{ship.coordinates}}</a>
+    </li>
+</ul>

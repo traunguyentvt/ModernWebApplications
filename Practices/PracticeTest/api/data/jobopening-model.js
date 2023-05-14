@@ -1,5 +1,14 @@
 const mongoose = require("mongoose");
 
+const actionSchema = mongoose.Schema({
+    description: {
+        type: String,
+        required: true
+    },
+    nextStep: String,
+    date: Date
+});
+
 const locationSchema = mongoose.Schema({
     name: {
         type: String,
@@ -17,13 +26,17 @@ const jobopeningSchema = mongoose.Schema({
         required: true,
     },
     salary: {
-        type: Number
+        type: String
     },
     location: locationSchema,
     description: String,
     experience: String,
     skills: [String],
-    postDate: Date
+    postDate: {
+        type : Date,
+        default: Date.now()
+    },
+    actions: [actionSchema]
 });
 
 mongoose.model("Jobopening", jobopeningSchema, "jobopening")

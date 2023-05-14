@@ -15,14 +15,14 @@ Install: sudo npm install --g nodemon
 //Export MongoDB
 JSON file: mongoexport -d SchoolDB -c students -o students.json --jsonArray --pretty
 
-//Restore MongoDB
-BSON file: mongorestore -gzip dump\
-
-//Dump MongoDB
+//Export MongoDB
 BSON file: mongodump --db meanGames --gzip
 
-//Import MongoDB
-JSON: mongoimport --db SchoolDB --collection students -- jsonArray students.json
+//Import MongoDB with gzip
+BSON file: mongorestore --gzip dump\
+
+//Import MongoDB with JSON
+JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
 
 //Angular CLI
 sudo npm i -g @angular/cli

@@ -15,6 +15,10 @@ import { AppRouter } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { AddJobComponent } from './add-job/add-job.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PaginationComponent } from './pagination/pagination.component';
+import { SearchskillsComponent } from './searchskills/searchskills.component';
+import { SearchpostdateComponent } from './searchpostdate/searchpostdate.component';
+import { AddActionComponent } from './add-action/add-action.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     JobsearchingComponent,
     NavigationComponent,
     ErrorPageComponent,
-    AddJobComponent
+    AddJobComponent,
+    PaginationComponent,
+    SearchskillsComponent,
+    SearchpostdateComponent,
+    AddActionComponent
   ],
   imports: [
     BrowserModule,

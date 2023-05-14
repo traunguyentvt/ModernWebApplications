@@ -8,6 +8,15 @@
 </ul>
 
 <p></p>
+Number of jobs per page: 
+<select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
+    <option *ngFor="let number of limitArray">{{number}}</option>
+</select>
+<br/>
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onOffsetChange($event)"></app-pagination>
+
+<p></p>
+<br/>
 <div>
     <button routerLink="addjob">Add Job</button>
 </div>

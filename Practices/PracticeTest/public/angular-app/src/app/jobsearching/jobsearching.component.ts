@@ -10,7 +10,7 @@ import { JobsearchingDataServiceService } from '../jobsearching-data-service.ser
 })
 export class JobsearchingComponent {
 
-  jobopening: Jobopening = new Jobopening("", "", 0, "", new Location("", "", [0]), "");
+  jobopening: Jobopening = new Jobopening("", "", "", "", new Location("", "", [0]), "");
 
   constructor(private _route:ActivatedRoute, private _router:Router, private _jobsearchingService:JobsearchingDataServiceService) {}
 
@@ -23,6 +23,9 @@ export class JobsearchingComponent {
     this._jobsearchingService.getOne(jobopeningId).subscribe({
       next: (job) => {
         this.jobopening = job;
+        if (isNaN(parseFloat(job.salary))) {
+          this.jobopening.salary = atob(job.salary);
+        }
       },
       error: (error) => {
         console.log(error);
@@ -52,7 +55,11 @@ export class JobsearchingComponent {
 
   onUpdate() {
     const jobopeningId = this.jobopening._id;
-    this._router.navigate(["updatejob/" + jobopeningId]);
+    this._router.navigate(["jobopenings/" + jobopeningId + "/updatejob"]);
+  }
+
+  onAddAction() {
+    this._router.navigate(["jobopenings/" + this.jobopening._id + "/addAction"]);
   }
 
 }

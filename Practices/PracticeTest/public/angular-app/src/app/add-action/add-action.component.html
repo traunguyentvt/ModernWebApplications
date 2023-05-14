@@ -1,0 +1,21 @@
+<H1>Add actions</H1>
+
+<form [formGroup]="actionForm" (ngSubmit)="onSubmit()">
+
+    <div>
+        <label>NextStep: <input formControlName="nextStep" placeholder="Next step"/></label>
+    </div>
+
+    <div>
+        <label>Description: <input formControlName="description" placeholder="Description"/></label>
+    </div>
+
+    <div>
+        <label>Date: <input type="date" placeholder="Date" formControlName="date"/></label>
+    </div>
+
+    <div>
+        <button type="submit">Save</button>
+    </div>
+
+</form>

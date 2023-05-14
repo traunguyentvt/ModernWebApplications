@@ -13,6 +13,20 @@
     <div>
         <label>Experience: <input formControlName="experience" placeholder="Experience"/></label>
     </div>
+    <div>
+        <label>Location: </label>
+        <!-- <form [formGroup]="location"> -->
+            <input formControlName="name" placeholder="Location name"/>
+            <input formControlName="longitude" placeholder="Longitude"/>
+            <input formControlName="latitude" placeholder="Latitude"/>
+        <!-- </form> -->
+    </div>
+    <div>
+        <label>Skills: <input formControlName="skills" placeholder="Skills"/></label>
+    </div>
+    <div>
+        <label>Postdate: <input type="date" formControlName="postDate" placeholder="Postdate"></label>
+    </div>
     <p></p>
     <div>
         <button type="submit">Save</button>
