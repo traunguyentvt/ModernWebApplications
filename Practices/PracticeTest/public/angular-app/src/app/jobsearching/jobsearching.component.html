@@ -1,0 +1,13 @@
+Job Information
+<H1>{{jobopening.title}}</H1>
+Salary: {{jobopening.salary|currency}} <br/>
+Description: {{jobopening.description}} <br/>
+<!-- Location: {{jobopening.location.name}} <br/> -->
+Expericence: {{jobopening.experience}} <br/>
+
+<p></p>
+
+<div>
+    <button (click)="onUpdate()">Update</button>
+    <button (click)="onDelete()">Delete</button>
+</div>

@@ -1,0 +1,13 @@
+<p></p>
+<H1>Job Searching</H1>
+<ul>
+    <li *ngFor="let job of jobopenings">
+        <a routerLink="jobopenings/{{job._id}}"> {{job.title}} </a>
+        <button (click)="onDelete(job)">Delete</button>
+    </li>
+</ul>
+
+<p></p>
+<div>
+    <button routerLink="addjob">Add Job</button>
+</div>

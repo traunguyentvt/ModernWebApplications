@@ -1,0 +1,20 @@
+<H1>{{titleForm}}</H1>
+
+<form [formGroup]="addForm" (ngSubmit)="onSave()">
+    <div>
+        <label>Title: <input formControlName="title" placeholder="Title"/></label>
+    </div>
+    <div>
+        <label>Salary: <input formControlName="salary" placeholder="Salary"/></label>
+    </div>
+    <div>
+        <label>Description: <input formControlName="description" placeholder="Description"></label>
+    </div>
+    <div>
+        <label>Experience: <input formControlName="experience" placeholder="Experience"/></label>
+    </div>
+    <p></p>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
