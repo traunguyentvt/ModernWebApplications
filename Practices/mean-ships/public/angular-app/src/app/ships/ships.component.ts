@@ -50,15 +50,38 @@ export class Ship {
 export class ShipsComponent implements OnInit {
 
   ships!: Ship[];
+  limitArray: number[] = [5, 10, 50];
+  currentCount: number = this.limitArray[0];
+  offset: number = 0;
+  isEndedPage: boolean = false;
 
   constructor(private shipService:ShipsDataService) { }
 
   ngOnInit(): void {
-    this.shipService.getShips().then(response => this.fillShipsFromService(response));
+    this.loadShips();
+  }
+
+  private loadShips() {
+    this.shipService.getShips(this.offset, this.currentCount).then(response => this.fillShipsFromService(response));
   }
 
   private fillShipsFromService(ships: Ship[]) {   
     this.ships= ships;
+    if (ships.length >= this.currentCount) {
+      this.isEndedPage = false;
+    } else {
+      this.isEndedPage = true;
+    }
+  }
+
+  onOffsetChange(offset:number) {
+    this.offset = offset;
+    this.loadShips();
+  }
+
+  onLimitChange() {
+    this.offset = 0;
+    this.loadShips();
   }
 
 }

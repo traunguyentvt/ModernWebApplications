@@ -1,7 +1,17 @@
+<p></p>
+Number of ships to display each page
+<select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
+    <option *ngFor="let number of limitArray">
+        {{number}}
+    </option>
+</select>
 The list of Ships are:<br/>
 
 <ul>
     <li *ngFor="let ship of ships">
-        <a routerLink="{{ship._id}}">{{ship.depth}} - {{ship.coordinates}}</a>
+        <a routerLink="ships/{{ship._id}}">{{ship.depth}} - {{ship.coordinates}}</a>
     </li>
 </ul>
+
+<p></p>
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onOffsetChange($event)"></app-pagination>

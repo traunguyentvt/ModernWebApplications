@@ -1,0 +1,21 @@
+<H1>Search Page</H1>
+
+<label>Latitude:</label> <br/>
+<input name="latitude" placeholder="Latitude" [(ngModel)]="latitude"/>
+<p></p>
+<label>Longitude:</label> <br/>
+<input name="longitude" placeholder="Longitude" [(ngModel)]="longitude"/>
+<p></p>
+<label>Distance:</label> <br/>
+<input name="distance" placeholder="Distance" [(ngModel)]="distance"/>
+<p></p>
+<button (click)="onSearch()">Search</button> <br/>
+<p></p>
+
+<img src="https://www.travelandleisure.com/thmb/iEqWMlM2ji2-PjXnTqyf7KZbn1g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/header-plitvice-lakes-national-park-croatia-GREENEST1221-50ac7a91c4f941f4a3394948078137c4.jpg" width="20%" height="20%"/>
+
+<ul>
+    <li *ngFor="let ship of ships">
+        <a routerLink="ships/{{ship._id}}">{{ship.depth}} - {{ship.coordinates}}</a>
+    </li>
+</ul>

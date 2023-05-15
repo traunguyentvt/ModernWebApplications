@@ -11,8 +11,8 @@ export class ShipsDataService {
 
   constructor(private http:HttpClient) { }
 
-  public getShips(): Promise<Ship[]> {
-    const url: string= this.apiBaseUrl + "/ships";
+  public getShips(offset:number, count:number): Promise<Ship[]> {
+    let url: string= this.apiBaseUrl + "/ships?offset=" + offset + "&count=" + count;
     
     return this.http.get(url).toPromise()
                 // .then(response => {console.log(response); response as Ship[]})
@@ -29,5 +29,10 @@ export class ShipsDataService {
 
   private handleError(error: any):Promise<any> {
     return Promise.reject(error.message || error);
+  }
+
+  public searchShips(latitude:number, longitude:number, distance:number):Promise<Ship[]> {
+    let url:string = this.apiBaseUrl + "/ships?latitude=" + latitude + "&longitude=" + longitude + "&distance=" + distance;
+    return this.http.get(url).toPromise().catch(this.handleError);
   }
 }

@@ -9,6 +9,10 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { ShipsComponent } from './ships/ships.component';
 import { ShipComponent } from './ship/ship.component';
 import { HomeComponent } from './home/home.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PaginationComponent } from './pagination/pagination.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +21,15 @@ import { HomeComponent } from './home/home.component';
     NavigationComponent,
     ShipsComponent,
     ShipComponent,
-    HomeComponent
+    HomeComponent,
+    PaginationComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {
         path: "",
@@ -34,6 +42,14 @@ import { HomeComponent } from './home/home.component';
       {
         path: "ships/:shipId",
         component: ShipComponent
+      },
+      {
+        path: "search",
+        component: SearchPageComponent
+      },
+      {
+        path: "**",
+        component: ErrorPageComponent
       }
     ])
   ],
