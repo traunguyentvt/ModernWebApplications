@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { WeatherServiceService } from '../weather-service.service';
 
@@ -89,6 +88,10 @@ export class WeatherListComponent {
 
       }
     });
+  }
+
+  onDelete() {
+    
   }
 
 

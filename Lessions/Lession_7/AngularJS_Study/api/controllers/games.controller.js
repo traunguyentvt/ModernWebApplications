@@ -32,6 +32,18 @@ module.exports.getAll = function(req, res) {
     //         }
     //     }
     // };
+
+    //Find
+    // Model.find({"location.address.state": "CA"}).select("location").exec().then(data => {
+    //     //data here
+    // });
+
+    //Group
+    // Model.aggregate([
+    //     {$group: {_id: "$location.address.state"}}
+    // ]).exec().then(data => {
+    //     //data here
+    // });
     
     if (req.query && req.query.keySearch) {
         // keySearch = req.query.keySearch.toLowerCase();

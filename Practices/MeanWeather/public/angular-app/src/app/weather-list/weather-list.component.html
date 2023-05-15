@@ -2,7 +2,8 @@
 
 <ul>
     <li *ngFor="let weather of weathers">
-        <a routerLink="{{weather._id}}">{{weather.st}}</a>
+        <a routerLink="{{weather._id}}">{{weather.st}} - {{weather.position.coordinates}} </a>
+        <button (click)="onDelete()">Delete</button>
         <p></p>
     </li>
 </ul>
