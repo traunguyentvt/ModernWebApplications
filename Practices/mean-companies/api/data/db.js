@@ -1,7 +1,7 @@
 const mongoose= require("mongoose");
 require("./companies-model");
 
-mongoose.connect(process.env.DB_URL);
+mongoose.connect(process.env.DB_URL, {useNewUrlParser:true, useUnifiedTopology:true});
 
 mongoose.connection.on("connected", function() {
     console.log("Mongoose connected to", process.env.DB_NAME);
@@ -31,4 +31,10 @@ process.on("SIGTERM", function() {
         console.log(process.env.SIGTERM_MESSAGE);
         process.exit(0);
     });    
+});
+
+process.on("SIGUSR2", function() {
+    mongoose.connection.close(function() {
+        process.kill(process.pid, "SIGUSR2");
+    })
 });

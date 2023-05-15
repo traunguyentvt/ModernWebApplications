@@ -1,0 +1,17 @@
+<H1>Search Page</H1>
+
+<label>Employee Name:</label>
+<br/>
+<input name="keySearch" placeholder="Employee Name" [(ngModel)]="keySearch"/>
+<p></p>
+<button (click)="onSearch()">Find</button>
+
+<ul>
+    <li *ngFor="let company of companies">
+        <a routerLink="{{company._id}}">{{company.name}}</a>
+    </li>
+</ul>
+
+<p></p>
+
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onOffsetChange($event)"></app-pagination>

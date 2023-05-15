@@ -10,6 +10,10 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CompanyComponent } from './company/company.component';
 import { HomeComponent } from './home/home.component';
 import { RelationshipsComponent } from './relationships/relationships.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,11 +23,15 @@ import { RelationshipsComponent } from './relationships/relationships.component'
     CompaniesComponent,
     CompanyComponent,
     HomeComponent,
-    RelationshipsComponent
+    RelationshipsComponent,
+    ErrorPageComponent,
+    PaginationComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot([
       {
         path: "",
@@ -40,6 +48,14 @@ import { RelationshipsComponent } from './relationships/relationships.component'
       {
         path: "companies/:companyId/relationships",
         component: RelationshipsComponent
+      },
+      {
+        path:"search",
+        component: SearchPageComponent
+      },
+      {
+        path:"**",
+        component: ErrorPageComponent
       }
     ])
   ],

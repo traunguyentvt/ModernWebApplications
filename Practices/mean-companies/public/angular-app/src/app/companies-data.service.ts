@@ -11,8 +11,14 @@ export class CompaniesDataService {
 
   constructor(private http:HttpClient) { }
 
-  public getCompanies(): Promise<Company[]> {
-    const url: string= this.apiBaseUrl + "/companies";
+  public getCompanies(offset:number, count:number, isSorted:number, keySearch:any): Promise<Company[]> {
+    let url: string= this.apiBaseUrl + "/companies?offset=" + offset + "&count=" + count;
+    if (isSorted == 1) {
+      url = url + "&isSorted=" + isSorted;
+    }
+    if (keySearch) {
+      url = url + "&keySearch=" + keySearch;
+    }
     
     return this.http.get(url).toPromise()
                 // .then(response => {console.log(response); response as Company[]})

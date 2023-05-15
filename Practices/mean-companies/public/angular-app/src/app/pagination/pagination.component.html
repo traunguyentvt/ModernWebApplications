@@ -1,0 +1,11 @@
+<nav>
+    <button *ngIf="offset == 0; else btnPrevious" disabled>Previous</button>
+    <ng-template #btnPrevious>
+        <button (click)="onPrevious()">Previous</button>
+    </ng-template>
+
+    <button *ngIf="isEndedPage == true; else btnNext" disabled>Next</button>
+    <ng-template #btnNext>
+        <button (click)="onNext()">Next</button>
+    </ng-template>
+</nav>

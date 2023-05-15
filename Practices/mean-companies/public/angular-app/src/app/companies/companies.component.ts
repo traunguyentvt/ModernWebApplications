@@ -101,16 +101,48 @@ export class Company {
 })
 export class CompaniesComponent implements OnInit {
 
+  offset:number = 0;
+  currentCount:number = 5;
+  isEndedPage:boolean = false;
+  isSorted:number = 0;
+  lblSort:string = "Sort";
+
   companies!: Company[];
 
   constructor(private companyService:CompaniesDataService) { }
 
   ngOnInit(): void {
-    this.companyService.getCompanies().then(response => this.fillCompaniesFromService(response));
+    this.loadCompanies();
+  }
+
+  loadCompanies() {
+    this.companyService.getCompanies(this.offset, this.currentCount, this.isSorted, null).then(response => this.fillCompaniesFromService(response));
   }
 
   private fillCompaniesFromService(companies: Company[]) {   
     this.companies= companies;
+    if (companies.length >= this.currentCount) {
+      this.isEndedPage = false;
+    } else {
+      this.isEndedPage = true;
+    }
+  }
+
+  onLimitChange(offset:number) {
+    this.offset = offset;
+    this.loadCompanies();
+  }
+
+  onSort() {
+    if (this.isSorted == 1) {
+      this.isSorted = 0;
+      this.lblSort = "Sort";
+    } else {
+      this.isSorted = 1;
+      this.lblSort = "UnSort";
+    }
+    this.offset = 0;
+    this.loadCompanies();
   }
 
 }

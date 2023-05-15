@@ -1,7 +1,14 @@
-The list of Companies are:<br/>
+The list of Companies are: 
+<button (click)="onSort()">{{lblSort}}</button>
+<br/>
 
 <ul>
     <li *ngFor="let company of companies">
         <a routerLink="{{company._id}}">{{company.name}}</a>
     </li>
 </ul>
+
+<p></p>
+
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onLimitChange($event)"></app-pagination>
+
