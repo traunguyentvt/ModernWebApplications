@@ -1,0 +1,7 @@
+The list of Companies are:<br/>
+
+<ul>
+    <li *ngFor="let company of companies">
+        <a routerLink="{{company._id}}">{{company.name}}</a>
+    </li>
+</ul>

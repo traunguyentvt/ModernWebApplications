@@ -21,7 +21,10 @@ BSON file: mongodump --db meanGames --gzip
 //Import MongoDB with gzip
 BSON file: mongorestore --gzip dump\
 
-//Import MongoDB with JSON
+//Import MongoDB with JSON Array
+JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
+
+//Import MongDB with JSON Object
 JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
 
 //Angular CLI

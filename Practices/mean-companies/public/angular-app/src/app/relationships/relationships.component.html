@@ -1,0 +1,11 @@
+The list of Employees are:<br/>
+
+<ul>
+    <li *ngFor="let employee of employees">
+        <span *ngIf="employee.is_past" >Ex </span>
+        <span *ngIf="!employee.is_past" >Current </span>
+        <span *ngIf="employee.title" >{{employee.title}}</span>  
+        <span *ngIf="!employee.title" >Employee</span>  
+        {{employee.first_name}} {{employee.last_name}} 
+    </li>
+</ul>
