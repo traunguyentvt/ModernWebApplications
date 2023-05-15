@@ -21,6 +21,9 @@ BSON file: mongodump --db meanGames --gzip
 //Import MongoDB with gzip
 BSON file: mongorestore --gzip dump\
 
+//Import MongoDB with BSON
+mongorestore -d DB_NAME PATH/
+
 //Import MongoDB with JSON Array
 JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
 

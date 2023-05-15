@@ -1,0 +1,25 @@
+{
+  "name": "meanweather",
+  "version": "1.0.0",
+  "description": "This is the MEAN Weather project.",
+  "main": "meanWeather.js",
+  "scripts": {
+    "start": "node meanWeather.js",
+    "test": "NVNT"
+  },
+  "keywords": [
+    "NODE",
+    "EXPRESS",
+    "ANGULAR",
+    "API",
+    "MONGOOSE"
+  ],
+  "author": "TrauNguyen",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.1",
+    "nodemon": "^2.0.22"
+  }
+}
