@@ -1,0 +1,21 @@
+
+<p></p>
+Display 
+<select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
+    <option *ngFor="let number of limitArray">{{number}}</option>
+</select>
+Movies
+
+<p></p>
+The list of Movies are:
+<p></p>
+
+<ul>
+    <li *ngFor="let movie of movies">
+        <a routerLink="{{movie._id}}">{{movie.title}} - {{movie.type}}</a>
+    </li>
+</ul>
+
+<p></p>
+<app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onOffsetChange($event)"></app-pagination>
+

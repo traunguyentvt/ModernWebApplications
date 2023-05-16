@@ -1,0 +1,21 @@
+{
+  "name": "mean-movies",
+  "version": "1.0.0",
+  "description": "Programming test movies project.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MEAN",
+    "GEO-SEARCH"
+  ],
+  "author": "Najeeb Najeeb",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.1"
+  }
+}

@@ -1,0 +1,7 @@
+
+<ul>
+    <li *ngFor="let airbnb of airbnbs">
+        <a routerLink="{{airbnb._id}}"> {{airbnb.name}} - {{airbnb.price|currency}} - {{airbnb.address?.country}} </a>
+        <button (click)="onDelete(airbnb)">Delete</button>
+    </li>
+</ul>

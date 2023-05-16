@@ -1,0 +1,20 @@
+<H1>Movie: {{movie.title}} <br/></H1>
+<br/>
+Type: {{movie.type}}<br/>
+Release Year: {{movie.year}}<br/>
+Length: {{movie.runtime}} minutes<br/>
+Rated: {{movie.rated}} <br/>
+Genres:<br/>
+<ul>
+    <li *ngFor="let genre of movie.genres">{{genre}}</li>
+</ul>
+
+Directors:<br/>
+<ul>
+    <li *ngFor="let director of movie.directors">{{director}}</li>
+</ul>
+
+Plot: {{movie.plot}}<br/>
+<p></p>
+
+<button (click)="onDelete()">Delete</button>
