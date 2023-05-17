@@ -4,7 +4,11 @@
 Duration: {{displayDuration()}} <br/>
 Artists: 
 <ul>
-    <li *ngFor="let artist of song.artists">{{artist.name}}</li>
+    <li *ngFor="let artist of song.artists">
+        <a>{{artist.name}}   </a>
+        <button (click)="onArtistEdit(artist)">Edit</button>
+        <button (click)="onArtistRemove(artist)">Remove</button>
+    </li>
 </ul>
 
 <br/>

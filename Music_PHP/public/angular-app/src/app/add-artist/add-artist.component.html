@@ -1,0 +1,17 @@
+
+<br/>
+<H1>Add artist to {{song.title}}</H1>
+
+<form [formGroup]="artistForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label>Name: <input formControlName="name" placeholder="Name"/></label>
+    </div>
+    <div>
+        <label>Age: <input formControlName="age" placeholder="Age"/></label>
+    </div>
+    
+    <p></p>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+    </form>

@@ -147,7 +147,9 @@ module.exports.fullUpdateOne = function(req, res) {
     const fullUpdate = function(req, res, song, response) {
         song.title = req.body.title;
         song.duration = parseInt(req.body.duration, 10);
-        song.artists = req.body.artists;
+        if (req.body.artists) {
+            song.artists = req.body.artists;
+        }
 
         _saveSong(res, song, response);
     };

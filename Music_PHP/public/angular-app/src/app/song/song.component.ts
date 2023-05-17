@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MusicDataService } from '../music-data.service';
-import { Song } from '../songs/songs.component';
+import { Artist, Song } from '../songs/songs.component';
 
 @Component({
   selector: 'app-song',
@@ -74,7 +74,28 @@ export class SongComponent {
   }
 
   addArtist() {
-    
+    this._router.navigate(["addArtist/" + this.song._id]);
+  }
+
+  onArtistRemove(artist:Artist) {
+    if (confirm("Do you want to delete " + artist.name + "?")) {
+      this._musicService.artistDeleteOne(this.song._id, artist._id).subscribe({
+        next: (any) => {
+          alert("Delete successfully!");
+          this.song.artists.splice(this.song.artists.indexOf(artist), 1);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+  
+        }
+      });
+    }
+  }
+
+  onArtistEdit(artist:Artist) {
+
   }
 
 }

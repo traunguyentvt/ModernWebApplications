@@ -1,3 +1,4 @@
+import { AddArtistComponent } from "./add-artist/add-artist.component";
 import { AddNewSongComponent } from "./add-new-song/add-new-song.component";
 import { ErrorPageComponent } from "./error-page/error-page.component";
 import { HomeComponent } from "./home/home.component";
@@ -39,6 +40,10 @@ export const AppRouter = [
     {
         path: "search",
         component: SearchComponent
+    },
+    {
+        path: "addArtist/:songId",
+        component: AddArtistComponent
     },
     {
         path: "**",

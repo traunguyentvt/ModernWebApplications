@@ -48,4 +48,19 @@ export class MusicDataService {
     return this._http.put<Song>(url, song);
   }
 
+  public artistAddOne(songId:string, artist:Object):Observable<Song> {
+    const url = this._baseUrl + "songs/" + songId + "/artists";
+    return this._http.post<Song>(url, artist);
+  }
+
+  public artistDeleteOne(songId:string, artistId:string):Observable<any> {
+    const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
+    return this._http.delete<any>(url);
+  }
+
+  public fullArtistUpdateOne(songId:string, artistId:string, artist:Object):Observable<any> {
+    const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
+    return this._http.put<any>(url, artist);
+  }
+
 }

@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddNewSongComponent } from './add-new-song/add-new-song.component';
 import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
+import { AddArtistComponent } from './add-artist/add-artist.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SearchComponent } from './search/search.component';
     PaginationComponent,
     AddNewSongComponent,
     RegisterComponent,
-    SearchComponent
+    SearchComponent,
+    AddArtistComponent
   ],
   imports: [
     BrowserModule,
