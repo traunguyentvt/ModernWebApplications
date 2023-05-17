@@ -73,4 +73,8 @@ export class SongComponent {
     // return myTime;
   }
 
+  addArtist() {
+    
+  }
+
 }

@@ -17,6 +17,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddNewSongComponent } from './add-new-song/add-new-song.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { RegisterComponent } from './register/register.component';
     ErrorPageComponent,
     PaginationComponent,
     AddNewSongComponent,
-    RegisterComponent
+    RegisterComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

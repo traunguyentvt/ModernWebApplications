@@ -7,9 +7,10 @@ Artists:
     <li *ngFor="let artist of song.artists">{{artist.name}}</li>
 </ul>
 
-<br/><br/><br/>
+<br/>
 
 <nav>
     <button (click)="onUpdate()">Update</button>
+    <button (click)="addArtist()">Add Artist</button>
     <button (click)="onDelete()">Delete</button>
 </nav>

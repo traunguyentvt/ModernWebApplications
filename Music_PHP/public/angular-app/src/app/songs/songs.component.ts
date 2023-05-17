@@ -51,17 +51,11 @@ export class SongsComponent {
   offset: number = 0;
   limitArray: number[] = [5, 10, 20, 50, 100, 200];
   currentCount: number = this.limitArray[0];
-  // keySearch!: string;
-  isEndedPage: boolean = false;
+  isEndedPage: boolean = true;
 
   constructor(private _musicService: MusicDataService, private _route: ActivatedRoute, private _router: Router) {}
 
   ngOnInit() {
-    // if (this._route.snapshot.queryParams["keySearch"]) {
-    //   this.keySearch = this._route.snapshot.queryParams["keySearch"];
-    // } else {
-    //   this.keySearch = "";
-    // }
     this.loadSongs();
   }
 
@@ -77,24 +71,6 @@ export class SongsComponent {
   onLimitChange() {
     this.loadSongWithOffset(0);
   }
-
-  // onInputChange() {
-  //   this.setKeySearcQuery();
-  //   this.loadSongWithOffset(0);
-  // }
-
-  // onSearch() {
-  //   this.setKeySearcQuery();
-  //   this.loadSongWithOffset(0);
-  // }
-
-  // setKeySearcQuery() {
-  //   this._router.navigate([], {
-  //     relativeTo: this._route,
-  //     queryParams: {keySearch:this.keySearch},
-  //     queryParamsHandling: "merge"
-  //   });
-  // }
 
   addSong() {
     this._router.navigate(["addnewsong"]);
