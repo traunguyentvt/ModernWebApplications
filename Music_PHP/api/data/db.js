@@ -1,6 +1,5 @@
 
 const mongoose = require("mongoose");
-const { callbackify } = require("util");
 require("./songs-model");
 require("./users-model");
 
@@ -20,31 +19,31 @@ mongoose.connection.on(process.env.MONGOOSE_ERROR, function(err) {
 });
 
 process.on(process.env.PROCESS_SIGINT, function() {
-    const closeWithCallbackify = callbackify(function() {
-        return mongoose.connection.close();
-    });
-    closeWithCallbackify(function() {
+    mongoose.connection.close().then(function() {
         console.log(process.env.SIGINT_MESSAGE);
         process.exit(0);
+    })
+    .catch(function(error) {
+
     });
 });
 
 process.on(process.env.PROCESS_SIGTERM, function() {
-    const closeWithCallbackify = callbackify(function() {
-        return mongoose.connection.close();
-    });
-    closeWithCallbackify(function() {
+    mongoose.connection.close().then(function() {
         console.log(process.env.SIGTERM_MESSAGE);
         process.exit(0);
+    })
+    .catch(function(error) {
+
     });
 });
 
 process.on(process.env.PROCESS_SIGUSR2, function() {
-    const closeWithCallbackify = callbackify(function() {
-        return mongoose.connection.close();
-    });
-    closeWithCallbackify(function() {
+    mongoose.connection.close().then(function() {
         console.log(process.env.SIGUSR2_MESSAGE);
         process.kill(process.pid, process.env.PROCESS_SIGUSR2);
+    })
+    .catch(function() {
+
     });
 });

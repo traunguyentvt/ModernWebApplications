@@ -4,14 +4,13 @@ const bCrypt = require("bcrypt");
 
 const User = mongoose.model(process.env.DB_USER_MODEL);
 
-
 const getOne= function(req, res) {
     
 }
 
 const addOne= function(req, res) {
     if (!req.body) {
-        res.status(parseInt(process.env.HTTP_RESPONSE_400)).json({ message : process.env.PARAMETERS_ARE_MISSING});
+        _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_400, 10), {message:process.env.PARAMETERS_ARE_MISSING});
         return;
     }
 
@@ -23,16 +22,24 @@ const addOne= function(req, res) {
                 password : passwordHash
             };
             User.create(newUser).then((user) => {
-                res.status(parseInt(process.env.HTTP_RESPONSE_OK)).json(user);
+                if (!user) {
+                    _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), {message:process.env.USER_NOT_FOUND});
+                } else {
+                    _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_OK, 10), user);
+                }
             }).catch((error) => {
-                res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(error);
+                _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
             });
         }).catch((error) => {
-            res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(error);
+            _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
         });
     }).catch((error) => {
-        res.status(parseInt(process.env.HTTP_RESPONSE_ERROR)).json(error);
+        _sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
     });
+}
+
+const _sendResponse = function(res, status, response) {
+    res.status(status).json(response);
 }
 
 module.exports = {

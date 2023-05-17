@@ -6,16 +6,20 @@
     </li>
 </ul>
 
+<br/>
+
 Number of songs per page 
 <select name="currentCount" (change)="onLimitChange()" [(ngModel)]="currentCount">
     <option *ngFor="let number of limitArray">{{number}}</option>
 </select>
-<label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
-<button (click)="onSearch()">Search</button>
+<!-- <label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
+<button (click)="onSearch()">Search</button> -->
+
 <p>
     <app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onPaginate($event)"></app-pagination>
 </p>
 
+<br/>
 <p>
     <button (click)="addSong()">Add Song</button>
 </p>

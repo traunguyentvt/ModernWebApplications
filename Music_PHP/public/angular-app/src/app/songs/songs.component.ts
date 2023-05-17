@@ -51,17 +51,17 @@ export class SongsComponent {
   offset: number = 0;
   limitArray: number[] = [5, 10, 20, 50, 100, 200];
   currentCount: number = this.limitArray[0];
-  keySearch!: string;
+  // keySearch!: string;
   isEndedPage: boolean = false;
 
   constructor(private _musicService: MusicDataService, private _route: ActivatedRoute, private _router: Router) {}
 
   ngOnInit() {
-    if (this._route.snapshot.queryParams["keySearch"]) {
-      this.keySearch = this._route.snapshot.queryParams["keySearch"];
-    } else {
-      this.keySearch = "";
-    }
+    // if (this._route.snapshot.queryParams["keySearch"]) {
+    //   this.keySearch = this._route.snapshot.queryParams["keySearch"];
+    // } else {
+    //   this.keySearch = "";
+    // }
     this.loadSongs();
   }
 
@@ -78,23 +78,23 @@ export class SongsComponent {
     this.loadSongWithOffset(0);
   }
 
-  onInputChange() {
-    this.setKeySearcQuery();
-    this.loadSongWithOffset(0);
-  }
+  // onInputChange() {
+  //   this.setKeySearcQuery();
+  //   this.loadSongWithOffset(0);
+  // }
 
-  onSearch() {
-    this.setKeySearcQuery();
-    this.loadSongWithOffset(0);
-  }
+  // onSearch() {
+  //   this.setKeySearcQuery();
+  //   this.loadSongWithOffset(0);
+  // }
 
-  setKeySearcQuery() {
-    this._router.navigate([], {
-      relativeTo: this._route,
-      queryParams: {keySearch:this.keySearch},
-      queryParamsHandling: "merge"
-    });
-  }
+  // setKeySearcQuery() {
+  //   this._router.navigate([], {
+  //     relativeTo: this._route,
+  //     queryParams: {keySearch:this.keySearch},
+  //     queryParamsHandling: "merge"
+  //   });
+  // }
 
   addSong() {
     this._router.navigate(["addnewsong"]);
@@ -120,7 +120,7 @@ export class SongsComponent {
   }
 
   loadSongs() {
-    this._musicService.getAll(this.offset, this.currentCount, this.keySearch).subscribe({
+    this._musicService.getAll(this.offset, this.currentCount, "").subscribe({
       next: (songs) => {
         this.songs = songs;
         this.updateEndedPage(songs.length);
