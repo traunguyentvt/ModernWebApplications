@@ -32,7 +32,7 @@ module.exports.getAll = function(req, res) {
         };
     }
 
-    const findWithCallback = callbackify(function(offset, limit) {
+    const findWithCallback = callbackify(function(offset, count) {
         return Song.find(query).skip(offset*count).limit(count).exec();
     });
     findWithCallback(offset, count, function(err, songs) {

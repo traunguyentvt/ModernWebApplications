@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MoviesDataService } from '../movies-data.service';
 
 export class Movie {
@@ -42,7 +42,12 @@ export class MoviesComponent implements OnInit {
 
   limitArray:number[] = [5, 10, 15];
   offset:number = 0;
+
+  @Input()
+  count: string = "5";
+
   currentCount: number = this.limitArray[0];
+
   isEndedPage:boolean = false;
 
   movies!: Movie[];
@@ -77,6 +82,13 @@ export class MoviesComponent implements OnInit {
 
   onLimitChange() {
     this.offset = 0;
+    this.loadMovies();
+  }
+
+  onLimit(event:any) {
+    this.offset = 0;
+    this.currentCount = parseInt(event.target.value);
+    console.log(this.currentCount);
     this.loadMovies();
   }
 

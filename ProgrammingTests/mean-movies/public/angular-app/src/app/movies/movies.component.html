@@ -7,6 +7,13 @@ Display
 Movies
 
 <p></p>
+<div>
+    Display <input type="radio" [ngModel]="count" value="5" (change)="onLimit($event)"/> 5
+    <input type="radio" [ngModel]="count" value="10" (change)="onLimit($event)"/> 10
+    <input type="radio" [ngModel]="count" value="15" (change)="onLimit($event)"/> 15 Movies
+</div>
+
+<p></p>
 The list of Movies are:
 <p></p>
 
