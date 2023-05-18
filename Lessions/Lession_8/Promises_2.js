@@ -26,7 +26,7 @@ const promise3 = new Promise((resolve, reject) => {
         } else {
             reject("Promise3 number too low");
         }
-    }, 2000)
+    }, 1000)
 });
 
 // const oldFashionMethod = function(callback) {
@@ -87,20 +87,45 @@ const promise3 = new Promise((resolve, reject) => {
 // })
 // console.log("promise1", promise1);
 
-function resolvePromiseAfter2s() {
-    return new Promise(resolve => setTimeout(() => {
-        resolve("Done in 2 sec");
-    }, 2000))
+// function resolvePromiseAfter2s() {
+//     return new Promise(resolve => setTimeout(() => {
+//         resolve("Done in 2 sec");
+//     }, 2000))
+// }
+
+// const myFunction = async function () {
+//     console.log("1");
+//     await resolvePromiseAfter2s().then((msg)=>{
+//         console.log(msg);
+//     });
+//     console.log("2");
+// }
+
+// console.log("Start");
+// myFunction();
+// console.log("End");
+
+const printValue = function(value) {
+    console.log(value);
+    const number = Math.random();
+    return new Promise((resolve, reject) => {resolve(number);});
 }
 
-const myFunction = async function () {
-    console.log("1");
-    await resolvePromiseAfter2s().then((msg)=>{
-        console.log(msg);
-    });
-    console.log("2");
+const printValue2 = function(value) {
+    console.log(value);
 }
 
-console.log("Start");
-myFunction();
-console.log("End");
+const printError = function(error) {
+    console.log(error);
+}
+
+//use const to avoid overriden or inherit
+//function can be duplicated
+const printFinally = function() {
+    console.log("Finally");
+}
+
+promise3.then(printValue)
+        .then((value) => printValue2(value))
+        .catch(printError)
+        .finally(printFinally);

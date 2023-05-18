@@ -14,9 +14,14 @@ export class UserDataService {
 
   constructor(private _http: HttpClient) {}
 
-  public addUser(user: Object): Observable<User> {
+  public register(user: Object): Observable<User> {
     const url = this._baseUrl + "users";
     return this._http.post<User>(url, user);
+  }
+
+  public login(user:Object):Observable<Object> {
+    const url = this._baseUrl + "users/login";
+    return this._http.post<Object>(url, user);
   }
 
 }

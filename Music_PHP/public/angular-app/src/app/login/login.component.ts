@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { UserDataService } from '../user-data.service';
 
 class Credential {
   username!: string;
@@ -23,18 +24,27 @@ export class LoginComponent {
   @ViewChild("loginForm")
   loginForm!: NgForm;
 
-  public login() {
-    console.log(this.loginForm.value);
-    // console.log(this.user);
-  }
-
-  constructor() {}
+  constructor(private _userService: UserDataService) {}
 
   ngOnInit() {
     this.user = new Credential("", "");
     // setTimeout(() => {
     //   this.loginForm.setValue(this.user);
     // }, 1);
+  }
+
+  public login() {
+    this._userService.login(this.loginForm.value).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+
+      }
+    });
   }
   
 }

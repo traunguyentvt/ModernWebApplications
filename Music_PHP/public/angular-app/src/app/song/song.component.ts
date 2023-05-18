@@ -74,6 +74,7 @@ export class SongComponent {
   }
 
   addArtist() {
+    // songs/:64572880029c211f625703cd/updateArtist/:artistId
     this._router.navigate(["addArtist/" + this.song._id]);
   }
 

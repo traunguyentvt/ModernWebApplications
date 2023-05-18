@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 const Song = mongoose.model(process.env.DB_SONG_MODEL);
+const helpers = require("../helpers");
 
 module.exports.getAll = function(req, res) {
     let offset = parseInt(process.env.DEFAULT_FIND_OFFSET, 10);
@@ -13,14 +14,18 @@ module.exports.getAll = function(req, res) {
         count = parseInt(req.query.count, 10);
     }
 
+    const response = helpers.createRespone();
+
     if (isNaN(offset) || isNaN(count)) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.QUERYSTRING_OFFSET_COUNT_SHOULD_BE_NUMBERS}}, res);
+        helpers.setMessageToBadRequest(response, process.env.QUERYSTRING_OFFSET_COUNT_SHOULD_BE_NUMBERS);
+        helpers.sendResponse(response, res);
         return;
     }
 
     const maxCount = parseInt(process.env.DEFAULT_MAX_FIND_LIMIT, 10);
     if (count > maxCount) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE + maxCount}}, res);
+        helpers.setMessageToBadRequest(response, process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE+maxCount);
+        helpers.sendResponse(response, res);
         return;
     }
     
@@ -31,44 +36,38 @@ module.exports.getAll = function(req, res) {
         };
     }
 
-    const response = {};
-    Song.find(query).skip(offset*count).limit(count).exec().then(function(songs) {
-        _setInternalResponse(response, songs, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    Song.find(query).skip(offset*count).limit(count).exec()
+        .then((songs) => helpers.setMessageToRequestSuccess(response, songs))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.getOne = function(req, res) {
-    const songId = req.params.songId;
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findById(songId).exec().then(function(song) {
-        if (!song) {
-            _setInternalResponse(response, {message:process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-        } else {
-            _setInternalResponse(response, song, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-        }
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    Song.findById(songId).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => helpers.setMessageToRequestSuccess(response, song))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.addOne = function(req, res) {
+    const response = helpers.createRespone();
+
     if (!req.body) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.PARAMETERS_ARE_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
@@ -81,83 +80,72 @@ module.exports.addOne = function(req, res) {
         newSong.artists = req.body.artists;
     }
 
-    const response = {};
-    Song.create(newSong).then(function(song) {
-        _setInternalResponse(response, song, parseInt(process.env.HTTP_RESPONSE_CREATED, 10));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    Song.create(newSong)
+        .then((song) => helpers.setMessageToCreatedSuccess(response, song))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.deleteOne = function(req, res) {
-    const songId = req.params.songId;
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findByIdAndDelete(songId).exec().then(function(song) {
-        if (!song) {
-            _setInternalResponse(response, {message:process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-        } else {
-            _setInternalResponse(response, song, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-        }
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    Song.findByIdAndDelete(songId).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => helpers.setMessageToRequestSuccess(response, song))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
-const _updateOne = function(req, res, updateCallback) {
-    const songId = req.params.songId;
+const _updateOne = function(req, res, _updateCallback) {
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
     if (!req.body) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.PARAMETERS_ARE_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findById(songId).exec().then(function(song) {
-        if (!song) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_ERROR, 10), message:{message:process.env.SONG_ID_NOT_FOUND_MESSAGE}}, res);
-        } else {
-            updateCallback(req, res, song, response);
-        }
-    })
-    .catch(function(error) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_ERROR, 10), message:error}, res);
-    })
-    .finally(function() {
-
-    });
+    Song.findById(songId).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => _updateCallback(req, song))
+        .then((savedSong) => helpers.setMessageToRequestSuccess(response, savedSong))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.fullUpdateOne = function(req, res) {
-    const fullUpdate = function(req, res, song, response) {
+    const _fullUpdate = function(req, song) {
         song.title = req.body.title;
         song.duration = parseInt(req.body.duration, 10);
         if (req.body.artists) {
             song.artists = req.body.artists;
         }
-
-        _saveSong(res, song, response);
+        return song.save();
     };
-    _updateOne(req, res, fullUpdate);
+    _updateOne(req, res, _fullUpdate);
 }
 
 module.exports.partialUpdateOne = function(req, res) {
-    const partialUpdate = function(req, res, song, response) {
+    const _partialUpdate = function(req, song) {
         if (req.body.title) {
             song.title = req.body.title;
         }
@@ -167,29 +155,7 @@ module.exports.partialUpdateOne = function(req, res) {
         if (req.body.artists) {
             song.artists = req.body.artists;
         }
-
-        _saveSong(res, song, response);
+        return song.save();
     };
-    _updateOne(req, res, partialUpdate);
-}
-
-const _saveSong = function(res, song, response) {
-    song.save().then(function(updatedSong) {
-        _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, err, parseInt(process.env.HTTP_RESPONSE_ERROR));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
-}
-
-const _setInternalResponse = function(response, data, code) {
-    response.status = code;
-    response.message = data;
-}
-
-const _sendResponse = function(response, res) {
-    res.status(response.status).json(response.message);
+    _updateOne(req, res, _partialUpdate);
 }

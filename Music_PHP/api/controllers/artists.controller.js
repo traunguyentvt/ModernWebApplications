@@ -1,236 +1,194 @@
 
 const mongoose = require("mongoose");
 const Song = mongoose.model(process.env.DB_SONG_MODEL);
+const helpers = require("../helpers");
 
 module.exports.artirstsGetAll = function(req, res) {
-    const songId = req.params.songId;
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec().then(function(song) {
-        if (!song) {
-            _setInternalResponse(response, {message:process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-        } else {
-            _setInternalResponse(response, song.artists, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-        }
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => helpers.setMessageToRequestSuccess(response, song.artists))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.artirstsGetOne = function(req, res) {
-    const songId = req.params.songId;
-    const artistId = req.params.artistId;
-    if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
-        return;
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
     }
-    if (!artistId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.ARTIST_ID_IS_MISSING}}, res);
+    if (!songId) {
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec().then(function(song) {
-        if (!song) {
-            _setInternalResponse(response, {message:process.env.SONG_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-        } else {
-            const artist = song.artists.id(artistId);
-            if (!artist) {
-                _setInternalResponse(response, {message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE}, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-            } else {
-                _setInternalResponse(response, artist, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-            }
-        }
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    const artistId = req.params.artistId;
+    if (!artistId) {
+        helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
+        return;
+    }
+
+    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => helpers.checkArtistExists(response, song, artistId))
+        .then((artist) => helpers.setMessageToRequestSuccess(response, artist))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
 module.exports.artirstsAddOne = function(req, res) {
-    const songId = req.params.songId;
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
+
     if (!req.body) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.PARAMETERS_ARE_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
-
-    const response = {};
-    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec().then(function(song) {
-        if (!song) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), message:{message:process.env.SONG_ID_NOT_FOUND_MESSAGE}}, res);
-        } else {
-            _addArtist(req, res, song, response);
-        }
-    })
-    .catch(function(error) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_ERROR, 10), message:error}, res);
-    })
-    .finally(function() {
-
-    });
+    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => _addArtist(req, song))
+        .then((updatedSong) => helpers.setMessageToCreatedSuccess(response, updatedSong))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
-const _addArtist = function(req, res, song, response) {
+const _addArtist = function(req, song) {
     const artist = {
         name : req.body.name,
         age : parseInt(req.body.age, 10)
     };
     song.artists.push(artist);
 
-    song.save().then(function(updatedSong) {
-        _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_CREATED, 10));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    return song.save();
 }
 
 module.exports.artirstsPartialUpdateOne = function(req, res) {
-    const partialUpdate = function(req, res, song, artistId, response) {
+    const _partialUpdate = function(req, song, artistId) {
         const artist = song.artists.id(artistId);
-        if (!artist) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), message:{message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE}}, res);
-            return;
-        }
         if (req.body.name) {
             artist.name = req.body.name;
         }
         if (req.body.age) {
             artist.age = parseInt(req.body.age, 10);
         }
-        _saveArtist(song, res, response);
+        
+        return song.save()
     };
-    _updateOne(req, res, partialUpdate);
+    _updateOne(req, res, _partialUpdate);
 }
 
 module.exports.artirstsFullUpdateOne = function(req, res) {
-    const fullUpdate = function(req, res, song, artistId, response) {
+    const _fullUpdate = function(req, song, artistId) {
         const artist = song.artists.id(artistId);
-        if (!artist) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), message:{message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE}}, res);
-            return;
-        }
         artist.name = req.body.name;
         artist.age = parseInt(req.body.age, 10);
-        _saveArtist(song, res, response);
-    };
-    _updateOne(req, res, fullUpdate);
-}
 
-const _updateOne = function(req, res, updateCallback) {
-    const songId = req.params.songId;
-    const artistId = req.params.artistId;
-    if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
-        return;
-    }
-    if (!artistId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.ARTIST_ID_IS_MISSING}}, res);
-        return;
-    }
-    if (!req.body) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.PARAMETERS_ARE_MISSING}}, res);
-        return;
-    }
-
-    const response = {};
-    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec().then(function(song) {
-        if (!song) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), message:{message:process.env.SONG_ID_NOT_FOUND_MESSAGE}}, res);
-        } else {
-            updateCallback(req, res, song, artistId, response);
-        }
-    })
-    .catch(function(error) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_ERROR, 10), message:error}, res);
-    })
-    .finally(function() {
-
-    });
-}
-
-const _saveArtist = function(song, res, response) {
-    song.save().then(function(updatedSong) {
-        _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
-    const saveWithCallback = callbackify(function(song) {
         return song.save();
+    };
+    _updateOne(req, res, _fullUpdate);
+}
+
+const _updateOne = function(req, res, _updateCallback) {
+    const response = helpers.createRespone();
+
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
+    if (!songId) {
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
+        return;
+    }
+
+    const artistId = req.params.artistId;
+    if (!artistId) {
+        helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
+        return;
+    }
+
+    if (!req.body) {
+        helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
+        helpers.sendResponse(response, res);
+        return;
+    }
+
+    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => _checkValidArtist(response, song, artistId))
+        .then((song) => _updateCallback(req, song, artistId))
+        .then((updatedSong) => helpers.setMessageToRequestSuccess(response, updatedSong))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
+}
+
+const _checkValidArtist= function(response, song, artistId) {
+    const artist = song.artists.id(artistId);
+    return new Promise((resolve, reject) => {
+        if (!artist) {
+            response.status = parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
+            reject({message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE});
+        } else {
+            resolve(song);
+        }
     });
 }
 
 module.exports.artirstsDeleteOne = function(req, res) {
-    const songId = req.params.songId;
-    const artistId = req.params.artistId;
+    const response = helpers.createRespone();
 
+    let songId;
+    if (req.params && req.params.songId) {
+        songId = req.params.songId;
+    }
     if (!songId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.SONG_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
+
+    const artistId = req.params.artistId;
     if (!artistId) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_400, 10), message:{message:process.env.ARTIST_ID_IS_MISSING}}, res);
+        helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
+        helpers.sendResponse(response, res);
         return;
     }
 
-    const response = {};
-    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec().then(function(song) {
-        if (!song) {
-            _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), message:{message:process.env.SONG_ID_NOT_FOUND_MESSAGE}}, res);
-        } else {
-            _removeArtist(res, artistId, song, response);
-        }
-    })
-    .catch(function(error) {
-        _sendResponse({status:parseInt(process.env.HTTP_RESPONSE_ERROR, 10), message:error}, res);
-    })
-    .finally(function() {
-
-    });
+    Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
+        .then((song) => helpers.checkSongExists(response, song))
+        .then((song) => _removeArtist(artistId, song))
+        .then((updatedSong) => helpers.setMessageToRequestSuccess(response, updatedSong))
+        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .finally(() => helpers.sendResponse(res, response));
 }
 
-const _removeArtist = function(res, artistId, song, response) {
+const _removeArtist = function(artistId, song) {
     song.artists.pull({_id : artistId});
-
-    song.save().then(function(updatedSong) {
-        _setInternalResponse(response, updatedSong, parseInt(process.env.HTTP_RESPONSE_OK, 10));
-    })
-    .catch(function(error) {
-        _setInternalResponse(response, error, parseInt(process.env.HTTP_RESPONSE_ERROR, 10));
-    })
-    .finally(function() {
-        _sendResponse(response, res);
-    });
+    return song.save();
 }
-
-const _setInternalResponse = function(response, data, code) {
-    response.status = code;
-    response.message = data;
-}
-
-const _sendResponse = function(response, res) {
-    res.status(response.status).json(response.message);
-}
-

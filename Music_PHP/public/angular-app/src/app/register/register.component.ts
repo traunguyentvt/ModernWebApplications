@@ -44,7 +44,7 @@ ngOnInit() {
 }
 
 register() {
-  this._userService.addUser(this.registrationForm.value).subscribe({
+  this._userService.register(this.registrationForm.value).subscribe({
     next: (user) => {
       alert("Your account has been created");
     },
