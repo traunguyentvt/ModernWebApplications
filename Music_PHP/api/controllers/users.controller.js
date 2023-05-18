@@ -30,7 +30,7 @@ const _addOne= function(req, res) {
         return;
     }
 
-    //called: subscription console
+    //called: separate concern
     const saltRound = parseInt(process.env.DEFAULT_SALT_ROUND, 10);
     bCrypt.genSalt(saltRound)
           .then((salt) => _generateHash(req.body.password, salt))
@@ -38,29 +38,6 @@ const _addOne= function(req, res) {
           .then((savedUser) => helpers.setMessageToCreatedSuccess(response, savedUser))
           .catch((error) => helpers.setMessageToInternalError(response, error))
           .finally(() => helpers.sendResponse(res, response));
-
-    // bCrypt.genSalt(10).then((saltHash) => {
-    //     bCrypt.hash(req.body.password, saltHash).then((passwordHash) => {
-    //         const newUser = {
-    //             name : req.body.name,
-    //             username : req.body.username,
-    //             password : passwordHash
-    //         };
-    //         User.create(newUser).then((user) => {
-    //             if (!user) {
-    //                 helpers.sendResponse(res, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10), {message:process.env.USER_NOT_FOUND});
-    //             } else {
-    //                 helpers.sendResponse(res, parseInt(process.env.HTTP_RESPONSE_CREATED, 10), user);
-    //             }
-    //         }).catch((error) => {
-    //             helpers.sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
-    //         });
-    //     }).catch((error) => {
-    //         helpers.sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
-    //     });
-    // }).catch((error) => {
-    //     helpers.sendResponse(res, parseInt(process.env.HTTP_RESPONSE_ERROR, 10), error);
-    // });
 }
 
 const _checkUserExists = function(response, user) {
