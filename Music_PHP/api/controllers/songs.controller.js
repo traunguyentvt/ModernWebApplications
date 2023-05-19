@@ -37,8 +37,8 @@ module.exports.getAll= function(req, res) {
     }
 
     Song.find(query).skip(offset*count).limit(count).exec()
-        .then((songs) => helpers.setMessageToRequestSuccess(response, songs))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((songs) => helpers.setDataToRequestSuccess(response, songs))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -57,8 +57,8 @@ module.exports.getOne= function(req, res) {
 
     Song.findById(songId).exec()
         .then((song) => helpers.checkSongExists(response, song))
-        .then((song) => helpers.setMessageToRequestSuccess(response, song))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((song) => helpers.setDataToRequestSuccess(response, song))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -81,8 +81,8 @@ module.exports.addOne= function(req, res) {
     }
 
     Song.create(newSong)
-        .then((song) => helpers.setMessageToCreatedSuccess(response, song))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((song) => helpers.setDataToCreatedSuccess(response, song))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -101,8 +101,8 @@ module.exports.deleteOne= function(req, res) {
 
     Song.findByIdAndDelete(songId).exec()
         .then((song) => helpers.checkSongExists(response, song))
-        .then((song) => helpers.setMessageToRequestSuccess(response, song))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((song) => helpers.setDataToRequestSuccess(response, song))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -127,8 +127,8 @@ const _updateOne= function(req, res, _updateCallback) {
     Song.findById(songId).exec()
         .then((song) => helpers.checkSongExists(response, song))
         .then((song) => _updateCallback(req, song))
-        .then((savedSong) => helpers.setMessageToRequestSuccess(response, savedSong))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((savedSong) => helpers.setDataToRequestSuccess(response, savedSong))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 

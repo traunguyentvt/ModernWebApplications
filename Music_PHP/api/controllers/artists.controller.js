@@ -18,8 +18,8 @@ module.exports.artirstsGetAll= function(req, res) {
 
     Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
         .then((song) => helpers.checkSongExists(response, song))
-        .then((song) => helpers.setMessageToRequestSuccess(response, song.artists))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((song) => helpers.setDataToRequestSuccess(response, song.artists))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -46,8 +46,8 @@ module.exports.artirstsGetOne= function(req, res) {
     Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
         .then((song) => helpers.checkSongExists(response, song))
         .then((song) => helpers.checkArtistExists(response, song, artistId))
-        .then((artist) => helpers.setMessageToRequestSuccess(response, artist))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((artist) => helpers.setDataToRequestSuccess(response, artist))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -72,8 +72,8 @@ module.exports.artirstsAddOne= function(req, res) {
     Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
         .then((song) => helpers.checkSongExists(response, song))
         .then((song) => _addArtist(req, song))
-        .then((updatedSong) => helpers.setMessageToCreatedSuccess(response, updatedSong))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((updatedSong) => helpers.setDataToCreatedSuccess(response, updatedSong))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -143,8 +143,8 @@ const _updateOne= function(req, res, _updateCallback) {
         .then((song) => helpers.checkSongExists(response, song))
         .then((song) => _checkValidArtist(response, song, artistId))
         .then((song) => _updateCallback(req, song, artistId))
-        .then((updatedSong) => helpers.setMessageToRequestSuccess(response, updatedSong))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((updatedSong) => helpers.setDataToRequestSuccess(response, updatedSong))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -183,8 +183,8 @@ module.exports.artirstsDeleteOne= function(req, res) {
     Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
         .then((song) => helpers.checkSongExists(response, song))
         .then((song) => _removeArtist(artistId, song))
-        .then((updatedSong) => helpers.setMessageToRequestSuccess(response, updatedSong))
-        .catch((error) => helpers.setMessageToInternalError(response, error))
+        .then((updatedSong) => helpers.setDataToRequestSuccess(response, updatedSong))
+        .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 

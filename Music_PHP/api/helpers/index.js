@@ -1,52 +1,51 @@
 
 const helpers = {
     createRespone: function(status= 200, message= "") {
-        return {status:status, message:{message:message}};
+        return {[process.env.VARIABLE_STATUS]:status, data:{[process.env.VARIABLE_MESSAGE]:message}};
+    },
+
+    sendResponse: function(res, response) {
+        res.status(response.status).json(response.data);
     },
     
     setStatusResponse: function(response, status) {
         response.status= status;
     },
     
-    setErrorMessage: function(response, error) {
-        response.message= error;
+    setDataResponse: function(response, data) {
+        response.data= data;
     },
     
-    sendResponse: function(res, response) {
-        res.status(response.status).json(response.message);
-    },
-    
-    setMessageToCreatedSuccess: function(response, data) {
+    setDataToCreatedSuccess: function(response, data) {
         response.status= parseInt(process.env.HTTP_RESPONSE_CREATED, 10);
-        response.message= data;
+        response.data= data;
     },
     
-    setMessageToInternalError: function(response, error) {
+    setDataToInternalError: function(response, error) {
         response.status= parseInt(process.env.HTTP_RESPONSE_ERROR, 10);
-        response.message= error;
+        response.data= error;
     },
     
     setMessageToBadRequest: function(response, message) {
         response.status= parseInt(process.env.HTTP_RESPONSE_BAD_REQUEST, 10);
-        response.message= {message:message};
+        response.data= {[process.env.VARIABLE_MESSAGE]:message};
     },
     
     setMessageToNotFound: function(response, message="") {
         response.status= parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
-        response.message= {message:message};
+        response.data= {[process.env.VARIABLE_MESSAGE]:message};
     },
     
-    setMessageToRequestSuccess: function(response, data) {
+    setDataToRequestSuccess: function(response, data) {
         response.status= parseInt(process.env.HTTP_RESPONSE_OK, 10);
-        response.message= data;
+        response.data= data;
     },
 
     checkSongExists: function(response, song) {
-        console.log(song);
         return new Promise((resolve, reject) => {
             if (!song) {
                 response.status= parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
-                reject({message:process.env.SONG_ID_NOT_FOUND_MESSAGE});
+                reject({[process.env.VARIABLE_MESSAGE]:process.env.SONG_ID_NOT_FOUND_MESSAGE});
             } else {
                 resolve(song);
             }
@@ -58,7 +57,7 @@ const helpers = {
         return new Promise((resolve, reject) => {
             if (!artist) {
                 response.status= parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
-                reject({message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE});
+                reject({[process.env.VARIABLE_MESSAGE]:process.env.ARTIST_ID_NOT_FOUND_MESSAGE});
             } else {
                 resolve(artist);
             }

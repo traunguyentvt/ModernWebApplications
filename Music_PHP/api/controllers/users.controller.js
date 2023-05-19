@@ -3,6 +3,8 @@ const mongoose= require("mongoose");
 const bCrypt= require("bcrypt");
 const User= mongoose.model(process.env.DB_USER_MODEL);
 const helpers= require("../helpers");
+const jwt = require("jsonwebtoken");
+const util = require("util");
 
 const _getOne= function(req, res) {
     const response= helpers.createRespone();
@@ -12,12 +14,13 @@ const _getOne= function(req, res) {
         return;
     }
 
-    User.findOne({username:req.body.username})
+    User.findOne({[process.env.VARIABLE_USERNAME]:req.body.username})
         .then((user) => _checkUserExists(response, user))
-        .then((user) => _checkPassword(req.body.password, user.password))
-        .then((isPasswordMatch) => _handlePasswordMatch(response, isPasswordMatch))
-        .then((data) => helpers.setMessageToRequestSuccess(response, data))
-        .catch((error) => helpers.setErrorMessage(response, error))
+        .then((user) => _checkPassword(req.body.password, user))
+        .then(({user, isPasswordMatch}) => _handlePasswordMatch(response, user, isPasswordMatch))
+        .then((user) => _generateToken(response, user))
+        .then((token) => helpers.setDataToRequestSuccess(response, {[process.env.VARIABLE_TOKEN]: token}))
+        .catch((error) => helpers.setDataResponse(response, error))
         .finally(() => helpers.sendResponse(res, response));
 }
 
@@ -35,34 +38,42 @@ const _addOne= function(req, res) {
     bCrypt.genSalt(saltRound)
           .then((salt) => _generateHash(req.body.password, salt))
           .then((passwordHash) => _createUser(req, passwordHash))
-          .then((savedUser) => helpers.setMessageToCreatedSuccess(response, savedUser))
-          .catch((error) => helpers.setMessageToInternalError(response, error))
+          .then((savedUser) => helpers.setDataToCreatedSuccess(response, savedUser))
+          .catch((error) => helpers.setDataToInternalError(response, error))
           .finally(() => helpers.sendResponse(res, response));
+}
+
+const _generateToken= function(user) {
+    const sign= util.promisify(jwt.sign);
+    return sign({[process.env.VARIABLE_NAME]: user.name}, process.env.VARIABLE_COURSE, {"expiresIn": 60*60*8});
 }
 
 const _checkUserExists= function(response, user) {
     return new Promise((resolve, reject) => {
         if (!user) {
-            _setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-            reject({message:process.env.USER_NOT_FOUND});
+            helpers.setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
+            reject({[process.env.VARIABLE_MESSAGE]:process.env.USER_NOT_FOUND});
         } else {
             resolve(user);
         }
     });
 }
 
-const _checkPassword= function(password, encryptedPassword) {
-    return bCrypt.compare(password, encryptedPassword);
+const _checkPassword= function(password, user) {
+    return new Promise((resolve, reject) => {
+        bCrypt.compare(password, user.password)
+            .then((isPasswordMatch) => resolve({user, isPasswordMatch}))
+            .catch((error) => reject(error));
+    });
 }
 
-const _handlePasswordMatch= function(response, isPasswordMatch) {
-    console.log(isPasswordMatch);
+const _handlePasswordMatch= function(response, user, isPasswordMatch) {
     return new Promise((resolve, reject) => {
         if (isPasswordMatch) {
-            resolve({message:process.env.LOGIN_SUCCESSFULLY});
+            resolve(user);
         } else {
-            _setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_UNAUTHORIZED, 10));
-            reject({message:process.env.PASSWORD_NOT_MATCH});
+            helpers.setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_UNAUTHORIZED, 10));
+            reject({[process.env.VARIABLE_MESSAGE]:process.env.PASSWORD_NOT_MATCH});
         }
     });
 }

@@ -4,16 +4,16 @@ const mongoose= require("mongoose");
 const userSchema= mongoose.Schema({
     username: {
         type: String,
-        required: [true, "username is required"],
+        required: [true, process.env.USERNAME_IS_REQUIRED],
         unique: true
     },
     name: {
         type: String,
-        required: [true, "name is required"]
+        required: [true, process.env.NAME_IS_REQUIRED]
     },
     password: {
         type: String,
-        required: [true, "password is required"]
+        required: [true, process.env.PASSWORD_IS_REQUIRED]
     }
 });
 
