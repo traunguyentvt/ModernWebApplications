@@ -5,11 +5,11 @@ const helpers = {
     },
     
     setStatusResponse: function(response, status) {
-        response.status = status;
+        response.status= status;
     },
     
     setErrorMessage: function(response, error) {
-        response.message = error;
+        response.message= error;
     },
     
     sendResponse: function(res, response) {

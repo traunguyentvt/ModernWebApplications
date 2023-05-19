@@ -1,10 +1,10 @@
 
-const mongoose = require("mongoose");
+const mongoose= require("mongoose");
 require("./songs-model");
 require("./users-model");
 
 
-mongoose.connect(process.env.DB_URL, { useNewUrlParser : true, useUnifiedTopology : true });
+mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on(process.env.MONGOOSE_CONNECTED, function() {
     console.log(process.env.MONGOOSE_CONNECTED_TO_MESSAGE + process.env.DB_NAME);
