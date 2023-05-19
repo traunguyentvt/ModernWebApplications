@@ -6,7 +6,7 @@ Artists:
 <ul>
     <li *ngFor="let artist of song.artists">
         <a>{{artist.name}}   </a>
-        <button routerLink="/songs/{{song._id}}/artists/{{artist._id}}">Edit</button>
+        <button routerLink="/songs/{{song._id}}/artists/{{artist._id}}/edit">Edit</button>
         <button (click)="onArtistRemove(artist)">Remove</button>
     </li>
 </ul>

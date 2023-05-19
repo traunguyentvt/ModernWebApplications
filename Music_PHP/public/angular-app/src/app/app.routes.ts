@@ -46,7 +46,7 @@ export const AppRouter = [
         component: AddArtistComponent
     },
     {
-        path: "songs/:songId/artists/:artistId",
+        path: "songs/:songId/artists/:artistId/edit",
         component: AddArtistComponent
     },
     {
