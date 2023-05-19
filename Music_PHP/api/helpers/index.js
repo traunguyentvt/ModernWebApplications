@@ -45,7 +45,7 @@ const helpers = {
         console.log(song);
         return new Promise((resolve, reject) => {
             if (!song) {
-                response.status = parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
+                response.status= parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
                 reject({message:process.env.SONG_ID_NOT_FOUND_MESSAGE});
             } else {
                 resolve(song);
@@ -54,10 +54,10 @@ const helpers = {
     },
 
     checkArtistExists: function(response, song, artistId) {
-        const artist = song.artists.id(artistId);
+        const artist= song.artists.id(artistId);
         return new Promise((resolve, reject) => {
             if (!artist) {
-                response.status = parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
+                response.status= parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10);
                 reject({message:process.env.ARTIST_ID_NOT_FOUND_MESSAGE});
             } else {
                 resolve(artist);

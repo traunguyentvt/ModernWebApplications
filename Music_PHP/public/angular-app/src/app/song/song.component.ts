@@ -36,10 +36,10 @@ export class SongComponent {
     }
   }
 
-  onUpdate() {
-    const songId = this.song._id;
-    this._router.navigate(["updatesong/" + songId]);
-  }
+  // onUpdate() {
+  //   const songId = this.song._id;
+  //   this._router.navigate(["updatesong/" + songId]);
+  // }
 
   loadSong() {
     const songId = this._activeRoute.snapshot.params["songId"];
@@ -73,10 +73,10 @@ export class SongComponent {
     // return myTime;
   }
 
-  addArtist() {
-    // songs/:64572880029c211f625703cd/updateArtist/:artistId
-    this._router.navigate(["addArtist/" + this.song._id]);
-  }
+  // addArtist() {
+  //   // songs/:64572880029c211f625703cd/updateArtist/:artistId
+  //   this._router.navigate(["addArtist/" + this.song._id]);
+  // }
 
   onArtistRemove(artist:Artist) {
     if (confirm("Do you want to delete " + artist.name + "?")) {
@@ -95,8 +95,8 @@ export class SongComponent {
     }
   }
 
-  onArtistEdit(artist:Artist) {
+  // onArtistEdit(artist:Artist) {
 
-  }
+  // }
 
 }

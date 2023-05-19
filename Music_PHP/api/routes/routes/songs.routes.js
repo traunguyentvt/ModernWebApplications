@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
+const express= require("express");
+const router= express.Router();
 
-const songController = require("../../controllers/songs.controller");
-const artistController = require("../../controllers/artists.controller");
+const songController= require("../../controllers/songs.controller");
+const artistController= require("../../controllers/artists.controller");
 
 router.route(process.env.ROUTE_SONGID)
     .get(songController.getOne)

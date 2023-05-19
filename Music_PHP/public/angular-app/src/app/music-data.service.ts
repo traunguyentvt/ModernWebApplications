@@ -28,14 +28,14 @@ export class MusicDataService {
     return this._http.get<Song[]>(url);
   }
 
-  public getOne(songId:string) {
+  public getOne(songId:string):Observable<Song> {
     const url = this._baseUrl + "songs/" + songId;
     return this._http.get<Song>(url);
   }
 
-  public deleteOne(songId:string):Observable<any> {
+  public deleteOne(songId:string):Observable<Object> {
     const url = this._baseUrl + "songs/" + songId;
-    return this._http.delete<any>(url);
+    return this._http.delete<Object>(url);
   }
 
   public addOne(newSong:Object):Observable<Song> {
@@ -53,14 +53,14 @@ export class MusicDataService {
     return this._http.post<Song>(url, artist);
   }
 
-  public artistDeleteOne(songId:string, artistId:string):Observable<any> {
+  public artistDeleteOne(songId:string, artistId:string):Observable<Object> {
     const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
-    return this._http.delete<any>(url);
+    return this._http.delete<Object>(url);
   }
 
-  public fullArtistUpdateOne(songId:string, artistId:string, artist:Object):Observable<any> {
+  public fullArtistUpdateOne(songId:string, artistId:string, artist:Object):Observable<Object> {
     const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
-    return this._http.put<any>(url, artist);
+    return this._http.put<Object>(url, artist);
   }
 
 }

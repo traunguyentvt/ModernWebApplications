@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MusicDataService } from '../music-data.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 export class Artist {
 
@@ -53,7 +52,7 @@ export class SongsComponent {
   currentCount: number = this.limitArray[0];
   isEndedPage: boolean = true;
 
-  constructor(private _musicService: MusicDataService, private _route: ActivatedRoute, private _router: Router) {}
+  constructor(private _musicService: MusicDataService) {}
 
   ngOnInit() {
     this.loadSongs();
@@ -72,9 +71,9 @@ export class SongsComponent {
     this.loadSongWithOffset(0);
   }
 
-  addSong() {
-    this._router.navigate(["addnewsong"]);
-  }
+  // addSong() {
+  //   this._router.navigate(["addnewsong"]);
+  // }
 
   onDelete(song: Song) {
     if (confirm("Do you want to delete " + song.title + "?")) {

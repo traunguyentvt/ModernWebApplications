@@ -6,7 +6,7 @@ Artists:
 <ul>
     <li *ngFor="let artist of song.artists">
         <a>{{artist.name}}   </a>
-        <button (click)="onArtistEdit(artist)">Edit</button>
+        <button routerLink="/songs/{{song._id}}/artists/{{artist._id}}">Edit</button>
         <button (click)="onArtistRemove(artist)">Remove</button>
     </li>
 </ul>
@@ -14,7 +14,7 @@ Artists:
 <br/>
 
 <nav>
-    <button (click)="onUpdate()">Update</button>
-    <button (click)="addArtist()">Add Artist</button>
+    <button routerLink="/songs/{{song._id}}/edit">Update</button>
+    <button routerLink="/songs/{{song._id}}/addArtist">Add Artist</button>
     <button (click)="onDelete()">Delete</button>
 </nav>

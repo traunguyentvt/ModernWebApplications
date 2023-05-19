@@ -18,6 +18,14 @@ export const AppRouter = [
         component: SongsComponent
     },
     {
+        path: "songs/addnewsong",
+        component: AddNewSongComponent
+    },
+    {
+        path: "songs/:songId/edit",
+        component: AddNewSongComponent
+    },
+    {
         path: "songs/:songId",
         component: SongComponent
     },
@@ -30,19 +38,15 @@ export const AppRouter = [
         component: LoginComponent
     },
     {
-        path: "addnewsong",
-        component: AddNewSongComponent
-    },
-    {
-        path: "updatesong/:songId",
-        component: AddNewSongComponent
-    },
-    {
         path: "search",
         component: SearchComponent
     },
     {
-        path: "addArtist/:songId",
+        path: "songs/:songId/addArtist",
+        component: AddArtistComponent
+    },
+    {
+        path: "songs/:songId/artists/:artistId",
         component: AddArtistComponent
     },
     {

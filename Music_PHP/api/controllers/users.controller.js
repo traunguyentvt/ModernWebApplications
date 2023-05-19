@@ -2,10 +2,10 @@
 const mongoose= require("mongoose");
 const bCrypt= require("bcrypt");
 const User= mongoose.model(process.env.DB_USER_MODEL);
-const helpers = require("../helpers");
+const helpers= require("../helpers");
 
 const _getOne= function(req, res) {
-    const response = helpers.createRespone();
+    const response= helpers.createRespone();
     if (!req.body || !req.body.username || !req.body.password) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
         helpers.sendResponse(res, response);
@@ -22,7 +22,7 @@ const _getOne= function(req, res) {
 }
 
 const _addOne= function(req, res) {
-    const response = helpers.createRespone();
+    const response= helpers.createRespone();
 
     if (!req.body || !req.body.name || !req.body.username || !req.body.password) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
@@ -31,7 +31,7 @@ const _addOne= function(req, res) {
     }
 
     //called: separate concern
-    const saltRound = parseInt(process.env.DEFAULT_SALT_ROUND, 10);
+    const saltRound= parseInt(process.env.DEFAULT_SALT_ROUND, 10);
     bCrypt.genSalt(saltRound)
           .then((salt) => _generateHash(req.body.password, salt))
           .then((passwordHash) => _createUser(req, passwordHash))
@@ -40,7 +40,7 @@ const _addOne= function(req, res) {
           .finally(() => helpers.sendResponse(res, response));
 }
 
-const _checkUserExists = function(response, user) {
+const _checkUserExists= function(response, user) {
     return new Promise((resolve, reject) => {
         if (!user) {
             _setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
@@ -51,11 +51,11 @@ const _checkUserExists = function(response, user) {
     });
 }
 
-const _checkPassword = function(password, encryptedPassword) {
+const _checkPassword= function(password, encryptedPassword) {
     return bCrypt.compare(password, encryptedPassword);
 }
 
-const _handlePasswordMatch = function(response, isPasswordMatch) {
+const _handlePasswordMatch= function(response, isPasswordMatch) {
     console.log(isPasswordMatch);
     return new Promise((resolve, reject) => {
         if (isPasswordMatch) {
@@ -81,7 +81,7 @@ const _createUser= function(req, passwordHash) {
 }
 
 
-module.exports = {
+module.exports= {
     login: _getOne,
     register: _addOne
 }
