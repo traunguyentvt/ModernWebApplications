@@ -50,6 +50,10 @@ export class SearchComponent {
     this.loadSongWithOffset(0);
   }
 
+  onSort() {
+    
+  }
+
   // setKeySearcQuery() {
   //   this._router.navigate([], {
   //     relativeTo: this._route,

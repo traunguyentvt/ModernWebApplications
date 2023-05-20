@@ -28,7 +28,7 @@ mongorestore -d DB_NAME PATH/
 JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
 
 //Import MongDB with JSON Object
-JSON: mongoimport --db SchoolDB --collection students --jsonArray students.json
+JSON: mongoimport --db SchoolDB --collection students students.json
 
 //Angular CLI
 sudo npm i -g @angular/cli
