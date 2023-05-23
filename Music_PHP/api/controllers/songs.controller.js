@@ -36,7 +36,16 @@ module.exports.getAll= function(req, res) {
         };
     }
 
-    Song.find(query).skip(offset*count).limit(count).exec()
+    let sort_query = {};
+    let sort = 0;
+    if (req.query && req.query.sort) {
+        sort= parseInt(req.query.sort, 10);
+    }
+    if (1 == sort) {
+        sort_query.title = sort;
+    }
+
+    Song.find(query).sort(sort_query).skip(offset*count).limit(count).exec()
         .then((songs) => helpers.setDataToRequestSuccess(response, songs))
         .catch((error) => helpers.setDataToInternalError(response, error))
         .finally(() => helpers.sendResponse(res, response));

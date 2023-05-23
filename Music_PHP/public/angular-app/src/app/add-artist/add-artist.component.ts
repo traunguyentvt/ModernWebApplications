@@ -34,27 +34,9 @@ export class AddArtistComponent {
       return;
     }
     this._musicService.getOne(songId).subscribe({
-      next: (song) => {
-        this.song = song;
-        const artistId = this._route.snapshot.params["artistId"];
-        if (artistId) {
-          const artistFlter = song.artists.filter(item => item._id == artistId);
-          if (artistFlter) {
-            this.artist = artistFlter[0];
-            this.artistForm = this._formBuilder.group({
-              name: this.artist.name,
-              age: this.artist.age
-            });
-            this.lblTitle = "Update Artist";
-          }
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-
-      }
+      next: (song) => this.fillSong(song),
+      error: (error) => this.handleError(error),
+      complete: () => {}
     });
   }
   
@@ -68,32 +50,48 @@ export class AddArtistComponent {
 
   onUpdateArtist() {
     this._musicService.fullArtistUpdateOne(this.song._id, this.artist._id, this.artistForm.value).subscribe({
-      next:(song) => {
-        alert("Your artist has been updated");
-        this._router.navigate(["songs/" + this.song._id]);
-      },
-      error:(error) => {
-        console.log(error);
-      },
-      complete:() => {
-
-      }
+      next:(song) => this.updateArtistSuccess(),
+      error:(error) => this.handleError(error),
+      complete:() => {}
     });
   }
 
   onCreateArtist() {
     this._musicService.artistAddOne(this.song._id, this.artistForm.value).subscribe({
-      next:(song) => {
-        alert("Your artist has been created");
-        this._router.navigate(["songs/" + this.song._id]);
-      },
-      error:(error) => {
-        console.log(error);
-      },
-      complete:() => {
-
-      }
+      next:(song) => this.createArtistSuccess(),
+      error:(error) => this.handleError(error),
+      complete:() => {}
     });
+  }
+
+  private updateArtistSuccess() {
+    alert("Your artist has been updated");
+    this._router.navigate(["songs/" + this.song._id]);
+  }
+
+  private createArtistSuccess() {
+    alert("Your artist has been created");
+    this._router.navigate(["songs/" + this.song._id]);
+  }
+
+  private fillSong(song: Song) {
+    this.song = song;
+        const artistId = this._route.snapshot.params["artistId"];
+        if (artistId) {
+          const artistFlter = song.artists.filter(item => item._id == artistId);
+          if (artistFlter) {
+            this.artist = artistFlter[0];
+            this.artistForm = this._formBuilder.group({
+              name: this.artist.name,
+              age: this.artist.age
+            });
+            this.lblTitle = "Update Artist";
+          }
+        }
+  }
+  
+  private handleError(error: Error) {
+    console.log(error);
   }
 
 }

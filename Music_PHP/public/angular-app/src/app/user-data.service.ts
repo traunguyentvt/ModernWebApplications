@@ -19,9 +19,9 @@ export class UserDataService {
     return this._http.post<User>(url, user);
   }
 
-  public login(user:Object):Observable<Object> {
+  public login(user:Object):Observable<User> {
     const url = this._baseUrl + "users/login";
-    return this._http.post<Object>(url, user);
+    return this._http.post<User>(url, user);
   }
 
 }

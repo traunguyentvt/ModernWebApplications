@@ -1,6 +1,6 @@
 
 const helpers = {
-    createRespone: function(status= 200, message= "") {
+    createRespone: function(status= parseInt(process.env.HTTP_RESPONSE_OK, 10), message= "") {
         return {[process.env.VARIABLE_STATUS]:status, data:{[process.env.VARIABLE_MESSAGE]:message}};
     },
 

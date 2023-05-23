@@ -1,15 +1,29 @@
 
 <br/>
-<label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
-<button (click)="onSearch()">Search</button>
-<button (click)="onSort()">Sort</button>
-<br/> <br/>
 
-<ul>
-    <li *ngFor="let song of songs">
-        <a routerLink="/songs/{{song._id}}">{{song.title}}  </a>
-    </li>
-</ul>
+<label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
+<button (click)="onSearch()" class="ms-3">Search</button>
+<button (click)="onSort()" class="ms-1">{{lblSort}}</button>
+
+<br/>
+<br/>
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-active" *ngFor="let song of songs; let i = index" routerLink="/songs/{{song._id}}">
+        <th scope="row">{{getSongIndex(i+1)}}</th>
+        <td>{{song.title}}</td>
+        <td>{{displayDuration(song)}}</td>
+      </tr>
+    </tbody>
+  </table>
 
 <br/>
 

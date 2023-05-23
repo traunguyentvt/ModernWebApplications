@@ -5,8 +5,8 @@ Page: {{offset+1}}
         <button (click)="onBack()">Previous</button>
     </ng-template>
 
-    <button *ngIf="isEndedPage == true; else nextBtn" disabled>Next</button>
+    <button *ngIf="isEndedPage == true; else nextBtn" disabled class="ms-1">Next</button>
     <ng-template #nextBtn>
-        <button (click)="onNext()">Next</button>
+        <button (click)="onNext()" class="ms-1">Next</button>
     </ng-template>
 </nav>

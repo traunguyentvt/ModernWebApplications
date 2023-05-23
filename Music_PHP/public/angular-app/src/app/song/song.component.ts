@@ -22,37 +22,19 @@ export class SongComponent {
   onDelete() {
     if (confirm("Do you want to delete " + this.song.title + "?")) {
       this._musicService.deleteOne(this.song._id).subscribe({
-        next: (any) => {
-          alert("Delete successfully!");
-          this._router.navigate(["songs"]);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-        complete: () => {
-  
-        }
+        next: (song) => this.refreshAfterDeleteSong(),
+        error: (error) => this.handleError(error),
+        complete: () => {}
       });
     }
   }
 
-  // onUpdate() {
-  //   const songId = this.song._id;
-  //   this._router.navigate(["updatesong/" + songId]);
-  // }
-
   loadSong() {
     const songId = this._activeRoute.snapshot.params["songId"];
     this._musicService.getOne(songId).subscribe({
-      next: (song) => {
-        this.song = song;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-
-      }
+      next: (song) => this.fillSong(song),
+      error: (error) => this.handleError(error),
+      complete: () => {}
     });
   }
 
@@ -67,36 +49,34 @@ export class SongComponent {
       result = hours.toString().padStart(2, "0") + ":";
     }
     return result + minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
-
-    // let myTime = new Date(1, 1, 1);
-    // myTime.setSeconds(this.song.duration);
-    // return myTime;
   }
-
-  // addArtist() {
-  //   // songs/:64572880029c211f625703cd/updateArtist/:artistId
-  //   this._router.navigate(["addArtist/" + this.song._id]);
-  // }
 
   onArtistRemove(artist:Artist) {
     if (confirm("Do you want to delete " + artist.name + "?")) {
       this._musicService.artistDeleteOne(this.song._id, artist._id).subscribe({
-        next: (any) => {
-          alert("Delete successfully!");
-          this.song.artists.splice(this.song.artists.indexOf(artist), 1);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-        complete: () => {
-  
-        }
+        next: (song) => this.refreshAfterRemoveArtist(artist),
+        error: (error) => this.handleError(error),
+        complete: () => {}
       });
     }
   }
 
-  // onArtistEdit(artist:Artist) {
+  refreshAfterDeleteSong() {
+    alert("Delete successfully!");
+    this._router.navigate(["songs"]);
+  }
 
-  // }
+  refreshAfterRemoveArtist(artist: Artist) {
+    alert("Delete successfully!");
+    this.song.artists.splice(this.song.artists.indexOf(artist), 1);
+  }
+
+  private fillSong(song: Song) {
+    this.song = song;
+  }
+
+  private handleError(error: Error) {
+    console.log(error);
+  }
 
 }

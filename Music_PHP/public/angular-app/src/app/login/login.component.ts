@@ -35,16 +35,18 @@ export class LoginComponent {
 
   public login() {
     this._userService.login(this.loginForm.value).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-
-      }
+      next: (data) => this.loginSuccess(data),
+      error: (error) => this.handleError(error),
+      complete: () => {}
     });
+  }
+
+  private loginSuccess(data: Object) {
+    console.log(data);
+  }
+  
+  private handleError(error: Error) {
+    console.log(error);
   }
   
 }

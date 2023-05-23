@@ -45,16 +45,18 @@ ngOnInit() {
 
 register() {
   this._userService.register(this.registrationForm.value).subscribe({
-    next: (user) => {
-      alert("Your account has been created");
-    },
-    error: (error) => {
-      console.log(error);
-    },
-    complete: () => {
-
-    }
+    next: (user) => this.fillUser(user),
+    error: (error) => this.handleError(error),
+    complete: () => {}
   });
+}
+
+private fillUser(user: User) {
+  alert("Your account has been created");
+}
+
+private handleError(error: Error) {
+  console.log(error);
 }
 
 }

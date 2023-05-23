@@ -18,12 +18,15 @@ export class MusicDataService {
 
   }
 
-  public getAll(offset:number, count:number, keySearch:string):Observable<Song[]> {
+  public getAll(offset:number, count:number, keySearch:string, sort:number):Observable<Song[]> {
     let url;
     if (keySearch) {
       url = this._baseUrl + "songs?offset=" + offset + "&count=" + count + "&keySearch=" + keySearch;
     } else {
       url = this._baseUrl + "songs?offset=" + offset + "&count=" + count;
+    }
+    if (1 == sort) {
+      url = url + "&sort=" + sort;
     }
     return this._http.get<Song[]>(url);
   }
@@ -33,9 +36,9 @@ export class MusicDataService {
     return this._http.get<Song>(url);
   }
 
-  public deleteOne(songId:string):Observable<Object> {
+  public deleteOne(songId:string):Observable<Song> {
     const url = this._baseUrl + "songs/" + songId;
-    return this._http.delete<Object>(url);
+    return this._http.delete<Song>(url);
   }
 
   public addOne(newSong:Object):Observable<Song> {
@@ -53,14 +56,14 @@ export class MusicDataService {
     return this._http.post<Song>(url, artist);
   }
 
-  public artistDeleteOne(songId:string, artistId:string):Observable<Object> {
+  public artistDeleteOne(songId:string, artistId:string):Observable<Song> {
     const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
-    return this._http.delete<Object>(url);
+    return this._http.delete<Song>(url);
   }
 
-  public fullArtistUpdateOne(songId:string, artistId:string, artist:Object):Observable<Object> {
+  public fullArtistUpdateOne(songId:string, artistId:string, artist:Object):Observable<Song> {
     const url = this._baseUrl + "songs/" + songId + "/artists/" + artistId;
-    return this._http.put<Object>(url, artist);
+    return this._http.put<Song>(url, artist);
   }
 
 }

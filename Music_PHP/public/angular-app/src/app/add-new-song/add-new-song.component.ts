@@ -39,31 +39,17 @@ export class AddNewSongComponent {
   onUpdateSong() {
     const songId = this.existedSong._id;
     this._musicService.fullUpdateOne(songId, this.songForm.value).subscribe({
-      next:(song) => {
-        alert("Your song has been updated");
-        this._router.navigate(["songs/" + songId]);
-      },
-      error:(error) => {
-        console.log(error);
-      },
-      complete:() => {
-
-      }
+      next:(song) => this.updateSongSuccess(songId),
+      error:(error) => this.handleError(error),
+      complete:() => {}
     });
   }
 
   onAddSong() {
     this._musicService.addOne(this.songForm.value).subscribe({
-      next:(song) => {
-        alert("Your song has been created");
-        this._router.navigate(["songs/" + song._id]);
-      },
-      error:(error) => {
-        console.log(error);
-      },
-      complete:() => {
-
-      }
+      next:(song) => this.addSongSuccess(song),
+      error:(error) => this.handleError(error),
+      complete:() => {}
     });
   }
 
@@ -73,21 +59,33 @@ export class AddNewSongComponent {
       return;
     }
     this._musicService.getOne(songId).subscribe({
-      next: (song) => {
-        this.btnTitle = "Update Song"
-        this.existedSong = song;
-        this.songForm = this._formBuilder.group({
-          title: song.title,
-          duration: song.duration
-        });
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-
-      }
+      next: (song) => this.fillSong(song),
+      error: (error) => this.handleError(error),
+      complete: () => {}
     });
+  }
+
+  private updateSongSuccess(songId: string) {
+    alert("Your song has been updated");
+        this._router.navigate(["songs/" + songId]);
+  }
+
+  private addSongSuccess(song: Song) {
+    alert("Your song has been created");
+    this._router.navigate(["songs/" + song._id]);
+  }
+
+  private fillSong(song: Song) {
+    this.btnTitle = "Update Song"
+    this.existedSong = song;
+    this.songForm = this._formBuilder.group({
+      title: song.title,
+      duration: song.duration
+    });
+  }
+  
+  private handleError(error: Error) {
+    console.log(error);
   }
 
 }
