@@ -1,0 +1,7 @@
+Latitude<input [(ngModel)]="latitude"/><br/>
+Longitude<input [(ngModel)]="longitude"/><br/>
+Distance<input [(ngModel)]="distance"/><br/>
+<button (click)="search()">Search</button>
+<ul>
+    <li *ngFor="let theater of theaters"><a routerLink="/theaters/{{theater._id}}">{{theater.theaterId}} - {{theater.location.address.city}}</a></li>
+</ul>

@@ -1,0 +1,7 @@
+The list of theaters are:<br/>
+
+<ul>
+    <li *ngFor="let theater of theaters">
+        <a routerLink="{{theater._id}}">{{theater.theaterId}} - {{theater.location.address.city}}</a>
+    </li>
+</ul>

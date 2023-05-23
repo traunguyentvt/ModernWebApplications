@@ -1,0 +1,8 @@
+Theater {{theater.theaterId}} <br/>
+
+Street: {{theater.location.address.street1}}<br/>
+City: {{theater.location.address.city}}<br/>
+State: {{theater.location.address.state}}<br/>
+Zip: {{theater.location.address.zipcode}}<br/>
+
+Locaiton: <div *ngFor="let number of theater.location.geo.coordinates">{{number}}</div>
