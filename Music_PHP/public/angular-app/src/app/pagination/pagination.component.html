@@ -1,12 +1,12 @@
 Page: {{offset+1}}
 <nav>
-    <button *ngIf="offset == 0; else backBtn" disabled>Previous</button>
+    <button *ngIf="offset == 0; else backBtn" disabled class="btn btn-primary">Previous</button>
     <ng-template #backBtn>
-        <button (click)="onBack()">Previous</button>
+        <button (click)="onBack()" class="btn btn-primary">Previous</button>
     </ng-template>
 
-    <button *ngIf="isEndedPage == true; else nextBtn" disabled class="ms-1">Next</button>
+    <button *ngIf="isEndedPage == true; else nextBtn" disabled class="btn btn-primary ms-1">Next</button>
     <ng-template #nextBtn>
-        <button (click)="onNext()" class="ms-1">Next</button>
+        <button (click)="onNext()" class="btn btn-primary ms-1">Next</button>
     </ng-template>
 </nav>

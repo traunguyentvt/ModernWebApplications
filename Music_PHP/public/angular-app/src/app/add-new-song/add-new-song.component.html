@@ -1,21 +1,27 @@
 
+<div class="row">
+<div class="col-md-6 mx-auto">
+
 <p></p>
-<H1>{{btnTitle}}</H1>
+<H1 class="text-center">{{btnTitle}}</H1>
 <p></p>
 
 <form [formGroup]="songForm" (ngSubmit)="onSubmit()">
     <div>
-        <label>Title: <input formControlName="title" placeholder="Title"/></label>
+        <label class="form-label mt-3 mb-0">Title</label>
+        <input formControlName="title" placeholder="Title" class="form-control"/>
     </div>
     <div>
-        <label>Duration: <input formControlName="duration" placeholder="Duration"/></label>
+        <label class="form-label mt-3 mb-0">Duration</label>
+        <input formControlName="duration" placeholder="Duration" class="form-control"/>
     </div>
-
-    <!-- <label for="exampleInputPassword1" class="form-label mt-4">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
 
     <br/>
     <div>
-        <button type="submit">Save</button>
+        <button class="btn btn-primary" type="submit" class="btn btn-primary">Save</button>
     </div>
 </form>
+
+</div>
+</div>
+

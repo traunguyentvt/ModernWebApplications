@@ -1,19 +1,27 @@
 
+<div class="row">
+<div class="col-md-6 mx-auto">
+
 <br/>
-<H1>{{song.title}}</H1>
+<H1 class="text-center">{{song.title}}</H1>
 <label>{{lblTitle}}</label>
 <p></p>
 
 <form [formGroup]="artistForm" (ngSubmit)="onSubmit()">
     <div>
-        <label>Name: <input formControlName="name" placeholder="Name"/></label>
+        <label class="form-label mt-3 mb-0">Name</label>
+        <input formControlName="name" placeholder="Name" class="form-control"/>
     </div>
     <div>
-        <label>Age: <input formControlName="age" placeholder="Age"/></label>
+        <label class="form-label mt-3 mb-0">Age</label>
+        <input formControlName="age" placeholder="Age" class="form-control"/>
     </div>
     
-    <p></p>
+    <br/>
     <div>
-        <button type="submit">Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
     </div>
-    </form>
+</form>
+
+</div>
+</div>

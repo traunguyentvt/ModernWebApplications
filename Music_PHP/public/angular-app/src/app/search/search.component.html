@@ -2,12 +2,13 @@
 <br/>
 
 <label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
-<button (click)="onSearch()" class="ms-3">Search</button>
-<button (click)="onSort()" class="ms-1">{{lblSort}}</button>
+<button class="btn btn-primary ms-3" (click)="onSearch()" >Search</button>
+<button class="btn btn-primary ms-1" (click)="onSort()" >{{lblSort}}</button>
 
 <br/>
 <br/>
 
+<label class="text-center"> Song List</label> <br/>
 <table class="table table-hover">
     <thead>
       <tr>

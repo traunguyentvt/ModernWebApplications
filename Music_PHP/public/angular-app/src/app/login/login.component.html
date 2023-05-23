@@ -1,14 +1,22 @@
 
+<div class="row">
+<div class="col-md-6 mx-auto">
+
 <br/>
 <form #loginForm="ngForm" (ngSubmit)="login()">
     <div>
-        <label>Username: <input name="username" placeholder="Username" [(ngModel)]="user.username"/></label>
+        <label class="form-label mt-3 mb-0">Username</label>
+        <input name="username" placeholder="Username" class="form-control" [(ngModel)]="user.username"/>
     </div>
     <div>
-        <label>Password: <input name="password" type="password" placeholder="Password" [(ngModel)]="user.password"/></label>
+        <label class="form-label mt-3 mb-0">Password</label>
+        <input name="password" type="password" placeholder="Password" class="form-control" [(ngModel)]="user.password"/>
     </div>
-    <p></p>
+    <br/>
     <div>
-        <button type="submit">Login</button>
+        <button class="btn btn-primary" type="submit">Login</button>
     </div>
 </form>
+
+</div>
+</div>

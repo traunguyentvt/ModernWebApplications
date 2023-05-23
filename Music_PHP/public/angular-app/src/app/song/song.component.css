@@ -1,0 +1,12 @@
+.btn-close{
+    height: 12px;
+    width: 5px;
+}
+
+.edit{
+    font-size: 15px;
+    opacity: 0.7;
+    &:hover{
+        opacity: 1;
+    }
+}

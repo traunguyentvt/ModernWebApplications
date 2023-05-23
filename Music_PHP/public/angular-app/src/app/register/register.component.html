@@ -1,19 +1,30 @@
+
+<div class="row">
+<div class="col-md-6 mx-auto">
+
 <br/>
 <form [formGroup]="registrationForm" (ngSubmit)="register()">
 <div>
-    <label>Username: <input formControlName="username" placeholder="Username"/></label>
+    <label class="form-label mt-3 mb-0">Username</label>
+    <input formControlName="username" placeholder="Username" class="form-control"/>
 </div>
 <div>
-    <label>Name: <input formControlName="name" placeholder="Name"/></label>
+    <label class="form-label mt-3 mb-0">Name</label>
+    <input formControlName="name" placeholder="Name" class="form-control"/>
 </div>
 <div>
-    <label>Password: <input type="password" formControlName="password" placeholder="Password"/></label>
+    <label class="form-label mt-3 mb-0">Password</label>
+    <input type="password" formControlName="password" placeholder="Password" class="form-control"/>
 </div>
 <div>
-    <label>Repeat password: <input type="password" formControlName="repeatPassword" placeholder="Repeat password"/></label>
+    <label class="form-label mt-3 mb-0">Repeat password</label>
+    <input type="password" formControlName="repeatPassword" placeholder="Repeat password" class="form-control"/>
 </div>
-<p></p>
+<br/>
 <div>
-    <button type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
 </div>
 </form>
+
+</div>
+</div>

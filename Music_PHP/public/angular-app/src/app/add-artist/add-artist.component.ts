@@ -14,7 +14,7 @@ export class AddArtistComponent {
   song: Song = new Song("", "", 0);
   artistForm!: FormGroup;
   artist!: Artist;
-  lblTitle: string = "Add Artist";
+  lblTitle: string = "Add an Artist";
 
   constructor(private _musicService: MusicDataService, private _route:ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder) {}
 
