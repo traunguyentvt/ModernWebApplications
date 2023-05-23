@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+
 import { UserDataService } from '../user-data.service';
 
 export class User {

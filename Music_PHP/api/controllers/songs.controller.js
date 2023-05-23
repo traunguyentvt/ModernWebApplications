@@ -29,14 +29,12 @@ module.exports.getAll= function(req, res) {
         return;
     }
     
-    let query= {};
+    const query= {};
     if (req.query && req.query.keySearch) {
-        query= {
-            title: {$regex: req.query.keySearch}
-        };
+        query.title= {$regex: req.query.keySearch};
     }
 
-    let sort_query = {};
+    const sort_query = {};
     let sort = 0;
     if (req.query && req.query.sort) {
         sort= parseInt(req.query.sort, 10);

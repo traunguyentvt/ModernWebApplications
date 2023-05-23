@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { MusicDataService } from '../music-data.service';
 
 export class Artist {

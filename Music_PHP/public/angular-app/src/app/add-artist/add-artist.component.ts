@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Artist, Song } from '../songs/songs.component';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MusicDataService } from '../music-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+
+import { MusicDataService } from '../music-data.service';
+import { Artist, Song } from '../songs/songs.component';
+
 
 @Component({
   selector: 'app-add-artist',
