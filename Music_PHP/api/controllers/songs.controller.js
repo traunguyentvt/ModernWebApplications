@@ -31,7 +31,7 @@ module.exports.getAll= function(req, res) {
     
     const query= {};
     if (req.query && req.query.keySearch) {
-        query.title= {$regex: req.query.keySearch};
+        query.title= {$regex: req.query.keySearch, $options: "i"};
     }
 
     const sort_query = {};
