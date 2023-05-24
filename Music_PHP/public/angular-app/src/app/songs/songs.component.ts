@@ -49,7 +49,7 @@ export class SongsComponent {
 
   songs: Song[] = [];
   offset: number = 0;
-  limitArray: number[] = [5, 10, 20, 50, 100, 200];
+  limitArray: number[] = [5, 10, 20, 25, 50];
   currentCount: number = this.limitArray[0];
   isEndedPage: boolean = true;
 

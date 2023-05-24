@@ -1,5 +1,5 @@
-Page: {{offset+1}}
-<nav>
+<!-- Page: {{offset+1}} -->
+<nav class="text-right">
     <button *ngIf="offset == 0; else backBtn" disabled class="btn btn-primary">Previous</button>
     <ng-template #backBtn>
         <button (click)="onBack()" class="btn btn-primary">Previous</button>

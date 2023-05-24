@@ -44,6 +44,7 @@ export class LoginComponent {
 
   private loginSuccess(data: Object) {
     console.log(data);
+    alert("Login successfully");
   }
   
   private handleError(error: Error) {

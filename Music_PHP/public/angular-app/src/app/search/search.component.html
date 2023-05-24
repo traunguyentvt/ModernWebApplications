@@ -1,7 +1,7 @@
 
 <br/>
 
-<label>Search by keyword <input name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
+<label>Search by keyword <input class="border-secondary form-control" name="keySearch" placeholder="KeyWord" [(ngModel)]="keySearch" (change)="onInputChange()"/></label>
 <button class="btn btn-primary ms-3" (click)="onSearch()" >Search</button>
 <button class="btn btn-primary ms-1" (click)="onSort()" >{{lblSort}}</button>
 
@@ -12,9 +12,9 @@
 <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Duration</th>
+        <th class="col-md-2">#</th>
+        <th class="col-md-7">Title</th>
+        <th class="col-md-3">Duration</th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +33,9 @@ Number of songs per page
     <option *ngFor="let number of limitArray">{{number}}</option>
 </select>
 
-<p>
-    <app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onPaginate($event)"></app-pagination>
-</p>
+<div>
+  <app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onPaginate($event)"></app-pagination>
+</div>
+
+<br/>
+

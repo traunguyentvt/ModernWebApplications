@@ -6,18 +6,32 @@
 <H1>{{song.title}}</H1> <br/>
 
 Duration: {{displayDuration()}} <br/>
-Artists: 
-<ul>
-    <li *ngFor="let artist of song.artists">
-        <a>{{artist.name}}   </a>
-        <button routerLink="/songs/{{song._id}}/artists/{{artist._id}}/edit" class="ms-1 mt-0 pt-0 btn edit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-              </svg>
-        </button>
-        <button (click)="onArtistRemove(artist)" class="ms-1 btn-close"></button>
-    </li>
-</ul>
+Artists
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-2">#</th>
+        <th class="col-md-5">Name</th>
+        <th class="col-md-3">Age</th>
+        <th class="col-md-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-active" *ngFor="let artist of song.artists; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{artist.name}}</td>
+        <td>{{artist.age}}</td>
+        <td>
+            <button routerLink="/songs/{{song._id}}/artists/{{artist._id}}/edit" class="ms-1 mt-0 pt-0 btn edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                  </svg>
+            </button>
+            <button (click)="onArtistRemove(artist)" class="ms-1 btn-close"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 <br/>
 

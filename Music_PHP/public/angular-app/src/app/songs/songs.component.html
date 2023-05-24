@@ -1,13 +1,14 @@
 <br/>
 
-<label class="text-center"> Song List</label> <br/>
+<label class="text-center"> Song List</label>
+<br/>
 
 <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Duration</th>
+        <th class="col-md-2">#</th>
+        <th class="col-md-7">Title</th>
+        <th class="col-md-3">Duration</th>
       </tr>
     </thead>
     <tbody>
@@ -26,12 +27,9 @@ Number of songs per page
     <option *ngFor="let number of limitArray">{{number}}</option>
 </select>
 
-<p>
+<div>
     <app-pagination [offset]="offset" [isEndedPage]="isEndedPage" (addEvent)="onPaginate($event)"></app-pagination>
-</p>
+</div>
 
 <br/>
-<p>
-    <button class="btn btn-primary" routerLink="/songs/addnewsong">Add Song</button>
-</p>
 
