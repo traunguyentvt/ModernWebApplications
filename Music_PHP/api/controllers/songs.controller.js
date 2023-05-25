@@ -19,14 +19,14 @@ module.exports.getAll= function(req, res) {
 
     if (isNaN(offset) || isNaN(count)) {
         helpers.setMessageToBadRequest(response, process.env.QUERYSTRING_OFFSET_COUNT_SHOULD_BE_NUMBERS);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     const maxCount= parseInt(process.env.DEFAULT_MAX_FIND_LIMIT, 10);
     if (count > maxCount) {
         helpers.setMessageToBadRequest(response, process.env.CANNOT_EXCEED_COUNT_OF_MESSAGE+maxCount);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
     
@@ -59,7 +59,7 @@ module.exports.getOne= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -75,7 +75,7 @@ module.exports.addOne= function(req, res) {
 
     if (!req.body) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -103,7 +103,7 @@ module.exports.deleteOne= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -123,12 +123,12 @@ const _updateOne= function(req, res, _updateCallback) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
     if (!req.body) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 

@@ -11,7 +11,7 @@ export const environment = {
     DEFAULT_EMPTY_ARRAY: [],
     DEFAULT_TRUE: true,
     DEFAULT_FALSE: false,
-    DEFAULT_TIME_OUT: 1200,
+    DEFAULT_TIME_OUT: 500,
     EMPTY_STRING: "",
     ZERO: 0,
     DEFAULT_SORT_VALUE: 1,

@@ -13,7 +13,7 @@ module.exports.artirstsGetAll= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -33,14 +33,14 @@ module.exports.artirstsGetOne= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     const artistId= req.params.artistId;
     if (!artistId) {
         helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -61,13 +61,13 @@ module.exports.artirstsAddOne= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     if (!req.body) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
     Song.findById(songId).select(process.env.DB_ARTISTS_COLLECTION).exec()
@@ -123,20 +123,20 @@ const _updateOne= function(req, res, _updateCallback) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     const artistId= req.params.artistId;
     if (!artistId) {
         helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     if (!req.body) {
         helpers.setMessageToBadRequest(response, process.env.PARAMETERS_ARE_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
@@ -170,14 +170,14 @@ module.exports.artirstsDeleteOne= function(req, res) {
     }
     if (!songId) {
         helpers.setMessageToBadRequest(response, process.env.SONG_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
     const artistId= req.params.artistId;
     if (!artistId) {
         helpers.setMessageToBadRequest(response, process.env.ARTIST_ID_IS_MISSING);
-        helpers.sendResponse(response, res);
+        helpers.sendResponse(res, response);
         return;
     }
 
