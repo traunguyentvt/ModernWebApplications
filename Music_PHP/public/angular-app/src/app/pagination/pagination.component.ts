@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-pagination',
@@ -8,9 +9,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class PaginationComponent {
 
   @Input()
-  isEndedPage: boolean = false;
+  isEndedPage: boolean = environment.DEFAULT_FALSE;
   @Input()
-  offset: number = 0;
+  offset: number = environment.ZERO;
 
   @Output()
   addEvent: EventEmitter<number> = new EventEmitter<number>();
@@ -22,7 +23,7 @@ export class PaginationComponent {
   }
 
   onBack() {
-    if (this.offset <= 0) {
+    if (this.offset <= environment.ZERO) {
       return;
     }
     this.offset -= 1;

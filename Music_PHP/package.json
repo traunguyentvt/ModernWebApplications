@@ -4,7 +4,9 @@
   "description": "Music_PHP is the Personal Hobby Project using NodeJS, Express Server, MongoDB and Angular.",
   "main": "meanMusic.js",
   "scripts": {
-    "start": "node meanMusic.js",
+    "startFrontEnd": "cd public/angular-app && npm start",
+    "startBackEnd": "nodemon",
+    "start": "npm run startBackEnd | npm run startFrontEnd",
     "test": "This is the Personal Hobby Project."
   },
   "keywords": [

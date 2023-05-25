@@ -3,14 +3,19 @@
 <div class="col-md-6 mx-auto">
 
 <br/>
+
+<div *ngIf="isError" class="alert alert-danger">
+    {{errorMessage}}
+</div>
+
 <form #loginForm="ngForm" (ngSubmit)="login()">
     <div>
         <label class="form-label mt-3 mb-0">Username</label>
-        <input name="username" placeholder="Username" class="form-control" [(ngModel)]="user.username"/>
+        <input name="username" placeholder="Username" class="form-control" [(ngModel)]="user.username" (change)="onInputChange()"/>
     </div>
     <div>
         <label class="form-label mt-3 mb-0">Password</label>
-        <input name="password" type="password" placeholder="Password" class="form-control" [(ngModel)]="user.password"/>
+        <input name="password" type="password" placeholder="Password" class="form-control" [(ngModel)]="user.password" (change)="onInputChange()"/>
     </div>
     <br/>
     <div>
@@ -20,3 +25,4 @@
 
 </div>
 </div>
+

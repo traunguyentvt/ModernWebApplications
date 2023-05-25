@@ -5,16 +5,23 @@
 <br/>
 <H1 class="text-center">{{song.title}}</H1>
 <label>{{lblTitle}}</label>
-<p></p>
+
+<div *ngIf="isSuccess" class="alert alert-success">
+    {{successMessage}}
+</div>
+
+<div *ngIf="isError" class="alert alert-danger">
+    {{errorMessage}}
+</div>
 
 <form [formGroup]="artistForm" (ngSubmit)="onSubmit()">
     <div>
         <label class="form-label mt-3 mb-0">Name</label>
-        <input formControlName="name" placeholder="Name" class="form-control"/>
+        <input formControlName="name" placeholder="Name" class="form-control" (change)="onInputChange()"/>
     </div>
     <div>
         <label class="form-label mt-3 mb-0">Age</label>
-        <input formControlName="age" placeholder="Age" class="form-control"/>
+        <input formControlName="age" placeholder="Age" class="form-control" (change)="onInputChange()"/>
     </div>
     
     <br/>

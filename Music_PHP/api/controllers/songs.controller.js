@@ -1,5 +1,6 @@
 
 const mongoose= require("mongoose");
+
 const Song= mongoose.model(process.env.DB_SONG_MODEL);
 const helpers= require("../helpers");
 
@@ -31,15 +32,15 @@ module.exports.getAll= function(req, res) {
     
     const query= {};
     if (req.query && req.query.keySearch) {
-        query.title= {$regex: req.query.keySearch, $options: "i"};
+        query.title= {$regex: req.query.keySearch, $options: process.env.FILTER_OPTION};
     }
 
     const sort_query = {};
-    let sort = 0;
+    let sort = parseInt(process.env.DEFAULT_SORT, 10);
     if (req.query && req.query.sort) {
         sort= parseInt(req.query.sort, 10);
     }
-    if (1 == sort) {
+    if (parseInt(process.env.DEFAULT_SORT_VALUE, 10) == sort) {
         sort_query.title = sort;
     }
 

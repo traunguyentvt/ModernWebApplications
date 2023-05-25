@@ -1,10 +1,11 @@
 
+const jwt= require("jsonwebtoken");
 const mongoose= require("mongoose");
 const bCrypt= require("bcrypt");
+const util= require("util");
+
 const User= mongoose.model(process.env.DB_USER_MODEL);
 const helpers= require("../helpers");
-const jwt = require("jsonwebtoken");
-const util = require("util");
 
 const _getOne= function(req, res) {
     const response= helpers.createRespone();
@@ -14,11 +15,11 @@ const _getOne= function(req, res) {
         return;
     }
 
-    User.findOne({[process.env.VARIABLE_USERNAME]:req.body.username})
+    User.findOne({[process.env.VARIABLE_USERNAME]: req.body.username})
         .then((user) => _checkUserExists(response, user))
         .then((user) => _checkPassword(req.body.password, user))
         .then(({user, isPasswordMatch}) => _handlePasswordMatch(response, user, isPasswordMatch))
-        .then((user) => _generateToken(response, user))
+        .then((user) => _generateToken(user))
         .then((token) => helpers.setDataToRequestSuccess(response, {[process.env.VARIABLE_TOKEN]: token}))
         .catch((error) => helpers.setDataResponse(response, error))
         .finally(() => helpers.sendResponse(res, response));
@@ -45,14 +46,14 @@ const _addOne= function(req, res) {
 
 const _generateToken= function(user) {
     const sign= util.promisify(jwt.sign);
-    return sign({[process.env.VARIABLE_NAME]: user.name}, process.env.VARIABLE_COURSE, {"expiresIn": 60*60*8});
+    return sign({[process.env.VARIABLE_NAME]: user.name}, process.env.TOKEN_SECRETE, {[process.env.VARIABLE_EXPIRES_IN]: parseInt(process.env.DEFAULT_EXPIRES_IN, 10)});
 }
 
 const _checkUserExists= function(response, user) {
     return new Promise((resolve, reject) => {
         if (!user) {
             helpers.setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_NOT_FOUND, 10));
-            reject({[process.env.VARIABLE_MESSAGE]:process.env.USER_NOT_FOUND});
+            reject({[process.env.VARIABLE_MESSAGE]: process.env.USER_NOT_FOUND});
         } else {
             resolve(user);
         }
@@ -73,7 +74,7 @@ const _handlePasswordMatch= function(response, user, isPasswordMatch) {
             resolve(user);
         } else {
             helpers.setStatusResponse(response, parseInt(process.env.HTTP_RESPONSE_UNAUTHORIZED, 10));
-            reject({[process.env.VARIABLE_MESSAGE]:process.env.PASSWORD_NOT_MATCH});
+            reject({[process.env.VARIABLE_MESSAGE]: process.env.PASSWORD_NOT_MATCH});
         }
     });
 }

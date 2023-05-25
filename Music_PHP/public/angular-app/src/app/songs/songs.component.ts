@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 import { MusicDataService } from '../music-data.service';
+import { environment } from 'src/environments/environment';
+import { Helpers } from '../app.helpers';
 
 export class Artist {
 
@@ -11,11 +14,27 @@ export class Artist {
   get _id() {return this.#_id;}
   get name() {return this.#name;}
   get age() {return this.#age;}
+  set name(name:string) {this.#name=name;}
+  set age(age:number) {this.#age=age;}
 
-  constructor(id:string, name:string, age:number) {
+  constructor(id:string= environment.EMPTY_STRING, name:string= environment.EMPTY_STRING, age:number= environment.ZERO) {
     this.#_id= id;
     this.#name= name;
     this.#age= age;
+  }
+
+  toJSON(): Object {
+    return {[environment.NAME]: this.name, [environment.AGE]: this.age};
+  }
+
+  fillArtistFromRelativeForm(artistForm: FormGroup) {
+    this.name= artistForm.value.name;
+    this.age= parseInt(artistForm.value.age, 10);
+  }
+
+  resetValue() {
+    this.name = environment.EMPTY_STRING;
+    this.age = environment.ZERO;
   }
 
 }
@@ -31,11 +50,28 @@ export class Song {
   get title() {return this.#title;}
   get duration() {return this.#duration;}
   get artists() {return this.#artists;}
+  set title(title:string) {this.#title=title;}
+  set duration(duration:number) {this.#duration=duration;}
+  set artists(artists:[Artist]) {this.#artists=artists;}
 
-  constructor(id:string, title:string, duration:number) {
+  constructor(id:string= environment.EMPTY_STRING, title:string= environment.EMPTY_STRING, duration:number= environment.ZERO) {
     this.#_id= id;
     this.#title= title;
     this.#duration= duration;
+  }
+
+  toJSON(): Object {
+    return {[environment.TITLE]: this.title, [environment.DURATION]: this.duration};
+  }
+
+  fillSongFromRelativeForm(songForm: FormGroup) {
+    this.title= songForm.value.title;
+    this.duration= parseInt(songForm.value.duration, 10);
+  }
+
+  resetValue() {
+    this.title = environment.EMPTY_STRING;
+    this.duration = environment.ZERO;
   }
 
 }
@@ -47,11 +83,11 @@ export class Song {
 })
 export class SongsComponent {
 
-  songs: Song[] = [];
-  offset: number = 0;
-  limitArray: number[] = [5, 10, 20, 25, 50];
-  currentCount: number = this.limitArray[0];
-  isEndedPage: boolean = true;
+  songs: Song[]= environment.DEFAULT_EMPTY_ARRAY;
+  offset: number= environment.ZERO;
+  limitArray: number[]= environment.DEFAULT_PAGE_ARRAY;
+  currentCount: number= this.limitArray[environment.ZERO];
+  isEndedPage: boolean= environment.DEFAULT_TRUE;
 
   constructor(private _musicService: MusicDataService) {}
 
@@ -59,8 +95,8 @@ export class SongsComponent {
     this.loadSongs();
   }
 
-  loadSongWithOffset(offset: number) {
-    this.offset = offset;
+  private loadSongWithOffset(offset: number) {
+    this.offset= offset;
     this.loadSongs();
   }
 
@@ -69,11 +105,11 @@ export class SongsComponent {
   }
 
   onLimitChange() {
-    this.loadSongWithOffset(0);
+    this.loadSongWithOffset(environment.ZERO);
   }
 
   onDelete(song: Song) {
-    if (confirm("Do you want to delete " + song.title + "?")) {
+    if (confirm(environment.MSG_DO_YOU_WANT_TO_DELETE_SPACE + song.title + "?")) {
       this._musicService.deleteOne(song._id).subscribe({
         next: (response) => this.refreshAfterDeleteSong(song),
         error: (error) => this.handleError(error),
@@ -82,23 +118,23 @@ export class SongsComponent {
     }
   }
 
-  loadSongs() {
-    this._musicService.getAll(this.offset, this.currentCount, "", 0).subscribe({
+  private loadSongs() {
+    this._musicService.getAll(this.offset, this.currentCount).subscribe({
       next: (songs) => this.fillSongs(songs),
       error: (error) => this.handleError(error),
       complete: () => {}
     });
   }
 
-  refreshAfterDeleteSong(song: Song) {
-    alert("Delete successfully!");
-      const index = this.songs.indexOf(song);
+  private refreshAfterDeleteSong(song: Song) {
+    alert(environment.MSG_DELETE_SUCCESSFULLY);
+      const index= this.songs.indexOf(song);
       this.songs.splice(index, 1);
       this.loadSongs();
   }
 
   private fillSongs(songs: Song[]) {
-    this.songs = songs;
+    this.songs= songs;
     this.updateEndedPage(songs.length);
   }
 
@@ -106,25 +142,16 @@ export class SongsComponent {
     console.log(error);
   }
 
-  updateEndedPage(count: number) {
+  private updateEndedPage(count: number) {
     if (count >= this.currentCount) {
-      this.isEndedPage = false;
+      this.isEndedPage= environment.DEFAULT_FALSE;
     } else {
-      this.isEndedPage = true;
+      this.isEndedPage= environment.DEFAULT_TRUE;
     }
   }
 
   displayDuration(song: Song): string {
-    const duration = song.duration;
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration - (hours * 3600)) / 60);
-    const seconds = duration - (hours * 3600) - (minutes * 60);
-
-    let result = "";
-    if (hours > 0) {
-      result = hours.toString().padStart(2, "0") + ":";
-    }
-    return result + minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    return Helpers.displayDuration(song);
   }
 
   getSongIndex(index:number) {

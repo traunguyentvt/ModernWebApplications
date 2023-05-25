@@ -12,7 +12,9 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navbarColor02">
+
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a class="nav-link" routerLink="">Home
@@ -22,19 +24,29 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="songs">Music</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="isLoggedIn" class="nav-item">
             <a class="nav-link" routerLink="/songs/addsong">Add Song</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="search">Search</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="register">Register</a>
+          <li *ngIf="isLoggedIn" class="nav-item">
+            <a class="nav-link" routerLink="profile">Profile</a>
           </li>
         </ul>
-        <div class="d-flex">
-          <button class="btn btn-primary my-2 my-sm-0" routerLink="login">Login</button>
+        
+        <div *ngIf="!isLoggedIn" class="d-flex">
+          <button class="btn btn-primary my-2 my-sm-0" routerLink="register">Register</button>
         </div>
+
+        <div *ngIf="!isLoggedIn" class="d-flex">
+          <button class="btn btn-primary my-2 my-sm-0 ms-2" routerLink="login">Login</button>
+        </div>
+
+        <div *ngIf="isLoggedIn" class="d-flex">
+          <button class="btn btn-primary my-2 my-sm-0 ms-2" (click)="logOut()">Logout</button>
+        </div>
+
       </div>
     </div>
   </nav>

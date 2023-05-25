@@ -4,16 +4,23 @@
 
 <p></p>
 <H1 class="text-center">{{btnTitle}}</H1>
-<p></p>
+
+<div *ngIf="isSuccess" class="alert alert-success">
+    {{successMessage}}
+</div>
+
+<div *ngIf="isError" class="alert alert-danger">
+    {{errorMessage}}
+</div>
 
 <form [formGroup]="songForm" (ngSubmit)="onSubmit()">
     <div>
         <label class="form-label mt-3 mb-0">Title</label>
-        <input formControlName="title" placeholder="Title" class="form-control"/>
+        <input formControlName="title" placeholder="Title" class="form-control" (change)="onInputChange()"/>
     </div>
     <div>
         <label class="form-label mt-3 mb-0">Duration</label>
-        <input formControlName="duration" placeholder="Duration" class="form-control"/>
+        <input formControlName="duration" placeholder="Duration" class="form-control" (change)="onInputChange()"/>
     </div>
 
     <br/>

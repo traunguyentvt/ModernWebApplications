@@ -2,16 +2,17 @@ const express= require("express");
 const router= express.Router();
 
 const songController= require("../../controllers/songs.controller");
+const authenticationController= require("../../controllers/authentication.controller");
 
 router.route(process.env.ROUTE_SONGID)
     .get(songController.getOne)
-    .put(songController.fullUpdateOne)
-    .patch(songController.partialUpdateOne)
-    .delete(songController.deleteOne);
+    .put(authenticationController.authenticate, songController.fullUpdateOne)
+    .patch(authenticationController.authenticate, songController.partialUpdateOne)
+    .delete(authenticationController.authenticate, songController.deleteOne);
 
-router.route(process.env.DASH)
+router.route(process.env.SLASH)
     .get(songController.getAll)
-    .post(songController.addOne);
+    .post(authenticationController.authenticate, songController.addOne);
 
 
-module.exports = router;
+module.exports= router;

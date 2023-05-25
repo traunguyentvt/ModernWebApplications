@@ -8,8 +8,8 @@ const artistSchema= mongoose.Schema({
     },
     age: {
         type: Number,
-        min: 6,
-        max: 99,
+        min: parseInt(process.env.DEFAULT_MIN_AGE, 10),
+        max: parseInt(process.env.DEFAULT_MAX_AGE, 10),
         required: [true, process.env.AGE_IS_REQUIRED]
     }
 });
@@ -21,8 +21,8 @@ const songSchema = mongoose.Schema({
     },
     duration: {
         type: Number,
-        min: 1,
-        max: 600,
+        min: parseInt(process.env.DEFAULT_MIN_DURATION, 10),
+        max: parseInt(process.env.DEFAULT_MAX_DURATION, 10),
         required: [true, process.env.DURATION_IS_REQUIRED]
     },
     artists: [artistSchema]

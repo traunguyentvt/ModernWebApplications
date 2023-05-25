@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { Song } from '../songs/songs.component';
 import { MusicDataService } from '../music-data.service';
+import { environment } from 'src/environments/environment';
+import { Helpers } from '../app.helpers';
 
 @Component({
   selector: 'app-search',
@@ -10,14 +12,14 @@ import { MusicDataService } from '../music-data.service';
 })
 export class SearchComponent {
 
-  songs: Song[] = [];
-  offset: number = 0;
-  limitArray: number[] = [5, 10, 20, 25, 50];
-  currentCount: number = this.limitArray[0];
+  songs: Song[]= environment.DEFAULT_EMPTY_ARRAY;
+  offset: number= environment.ZERO;
+  limitArray: number[]= environment.DEFAULT_PAGE_ARRAY;
+  currentCount: number= this.limitArray[environment.ZERO];
   keySearch!: string;
-  isEndedPage: boolean = true;
-  sort: number = 0;
-  lblSort:string = "Sort"
+  isEndedPage: boolean= environment.DEFAULT_TRUE;
+  sort: number= environment.ZERO;
+  lblSort:string= environment.SORT;
 
   constructor(private _musicService: MusicDataService) {}
 
@@ -30,8 +32,8 @@ export class SearchComponent {
     this.loadSongs();
   }
 
-  loadSongWithOffset(offset: number) {
-    this.offset = offset;
+  private loadSongWithOffset(offset: number) {
+    this.offset= offset;
     this.loadSongs();
   }
 
@@ -40,28 +42,29 @@ export class SearchComponent {
   }
 
   onLimitChange() {
-    this.loadSongWithOffset(0);
+    this.loadSongWithOffset(environment.ZERO);
   }
 
   onInputChange() {
   //   this.setKeySearcQuery();
-    this.loadSongWithOffset(0);
+    this.loadSongWithOffset(environment.ZERO);
   }
 
   onSearch() {
   //   this.setKeySearcQuery();
-    this.loadSongWithOffset(0);
+    this.loadSongWithOffset(environment.ZERO);
   }
 
   onSort() {
-    if (1 == this.sort) {
-      this.sort = 0;
-      this.lblSort = "Sort";
+    const zero= environment.ZERO;
+    if (environment.DEFAULT_SORT_VALUE == this.sort) {
+      this.sort= zero;
+      this.lblSort= environment.SORT;
     } else {
-      this.sort = 1;
-      this.lblSort = "unSort";
+      this.sort= environment.DEFAULT_SORT_VALUE;
+      this.lblSort= environment.UN_SORT;
     }
-    this.loadSongWithOffset(0);
+    this.loadSongWithOffset(zero);
   }
 
   // setKeySearcQuery() {
@@ -72,38 +75,29 @@ export class SearchComponent {
   //   });
   // }
 
-  loadSongs() {
+  private loadSongs() {
     if (!this.keySearch) {
-      this.songs = [];
+      this.songs= environment.DEFAULT_EMPTY_ARRAY;
       return;
     }
 
-    this._musicService.getAll(this.offset, this.currentCount, this.keySearch, this.sort).subscribe({
+    this._musicService.getSearchSongs(this.offset, this.currentCount, this.keySearch, this.sort).subscribe({
       next: (songs) => this.fillSongs(songs),
       error: (error) => this.handleError(error),
       complete: () => {}
     });
   }
 
-  updateEndedPage(count: number) {
+  private updateEndedPage(count: number) {
     if (count >= this.currentCount) {
-      this.isEndedPage = false;
+      this.isEndedPage= environment.DEFAULT_FALSE;
     } else {
-      this.isEndedPage = true;
+      this.isEndedPage= environment.DEFAULT_TRUE;
     }
   }
 
   displayDuration(song: Song): string {
-    const duration = song.duration;
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration - (hours * 3600)) / 60);
-    const seconds = duration - (hours * 3600) - (minutes * 60);
-
-    let result = "";
-    if (hours > 0) {
-      result = hours.toString().padStart(2, "0") + ":";
-    }
-    return result + minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    return Helpers.displayDuration(song);
   }
 
   getSongIndex(index:number) {
@@ -111,7 +105,7 @@ export class SearchComponent {
   }
 
   private fillSongs(songs: Song[]) {
-    this.songs = songs;
+    this.songs= songs;
     this.updateEndedPage(songs.length);
   }
 

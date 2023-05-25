@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { MusicDataService } from '../music-data.service';
 import { Artist, Song } from '../songs/songs.component';
+import { AuthenticationService } from '../authentication.service';
+import { environment } from 'src/environments/environment';
+import { Helpers } from '../app.helpers';
 
 @Component({
   selector: 'app-song',
@@ -11,16 +14,17 @@ import { Artist, Song } from '../songs/songs.component';
 })
 export class SongComponent {
 
-  song: Song = new Song("", "", 0);
+  song: Song= new Song();
+  get isLoggedIn() {return this._authenticationService.isLoggedIn;}
 
-  constructor(private _activeRoute: ActivatedRoute, private _router: Router, private _musicService: MusicDataService) {}
+  constructor(private _activeRoute: ActivatedRoute, private _router: Router, private _musicService: MusicDataService, private _authenticationService: AuthenticationService) {}
 
   ngOnInit() {
     this.loadSong();
   }
 
   onDelete() {
-    if (confirm("Do you want to delete " + this.song.title + "?")) {
+    if (confirm(environment.MSG_DO_YOU_WANT_TO_DELETE_SPACE + this.song.title + "?")) {
       this._musicService.deleteOne(this.song._id).subscribe({
         next: (song) => this.refreshAfterDeleteSong(),
         error: (error) => this.handleError(error),
@@ -29,8 +33,8 @@ export class SongComponent {
     }
   }
 
-  loadSong() {
-    const songId = this._activeRoute.snapshot.params["songId"];
+  private loadSong() {
+    const songId= this._activeRoute.snapshot.params[environment.SONGID];
     this._musicService.getOne(songId).subscribe({
       next: (song) => this.fillSong(song),
       error: (error) => this.handleError(error),
@@ -39,20 +43,11 @@ export class SongComponent {
   }
 
   displayDuration(): string {
-    const duration = this.song.duration;
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration - (hours * 3600)) / 60);
-    const seconds = duration - (hours * 3600) - (minutes * 60);
-
-    let result = "";
-    if (hours > 0) {
-      result = hours.toString().padStart(2, "0") + ":";
-    }
-    return result + minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+    return Helpers.displayDuration(this.song);
   }
 
   onArtistRemove(artist:Artist) {
-    if (confirm("Do you want to delete " + artist.name + "?")) {
+    if (confirm(environment.MSG_DO_YOU_WANT_TO_DELETE_SPACE + artist.name + "?")) {
       this._musicService.artistDeleteOne(this.song._id, artist._id).subscribe({
         next: (song) => this.refreshAfterRemoveArtist(artist),
         error: (error) => this.handleError(error),
@@ -61,18 +56,18 @@ export class SongComponent {
     }
   }
 
-  refreshAfterDeleteSong() {
-    alert("Delete successfully!");
-    this._router.navigate(["songs"]);
+  private refreshAfterDeleteSong() {
+    alert(environment.MSG_DELETE_SUCCESSFULLY);
+    this._router.navigate([environment.SONGS]);
   }
 
-  refreshAfterRemoveArtist(artist: Artist) {
-    alert("Delete successfully!");
+  private refreshAfterRemoveArtist(artist: Artist) {
+    alert(environment.MSG_DELETE_SUCCESSFULLY);
     this.song.artists.splice(this.song.artists.indexOf(artist), 1);
   }
 
   private fillSong(song: Song) {
-    this.song = song;
+    this.song= song;
   }
 
   private handleError(error: Error) {

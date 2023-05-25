@@ -3,24 +3,26 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { User } from './register/register.component';
+import { Credential, Token } from './login/login.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  _baseUrl: string = "http://localhost:3000/api/";
+  // private _baseUrl: string = environment.API_BASE_URL;
 
   constructor(private _http: HttpClient) {}
 
-  public register(user: Object): Observable<User> {
-    const url = this._baseUrl + "users";
-    return this._http.post<User>(url, user);
+  public register(user: User): Observable<User> {
+    const url = environment.API_URL_USERS;
+    return this._http.post<User>(url, user.toJSON());
   }
 
-  public login(user:Object):Observable<User> {
-    const url = this._baseUrl + "users/login";
-    return this._http.post<User>(url, user);
+  public login(user: Credential): Observable<Token> {
+    const url = environment.API_URL_USERS_LOGIN;
+    return this._http.post<Token>(url, user.toJSON());
   }
 
 }

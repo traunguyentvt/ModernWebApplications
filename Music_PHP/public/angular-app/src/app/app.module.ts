@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JwtModule, JwtModuleOptions } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -19,7 +20,16 @@ import { AddNewSongComponent } from './add-new-song/add-new-song.component';
 import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
 import { AddArtistComponent } from './add-artist/add-artist.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthenticationInterceptor } from './authentication.interceptor';
+import { environment } from 'src/environments/environment';
 
+
+const JWT_Module_Options: JwtModuleOptions = {
+  config: {
+      tokenGetter: localStorage.getItem(environment.TOKEN)?.toString
+  }
+};
 
 @NgModule({
   declarations: [
@@ -36,16 +46,18 @@ import { AddArtistComponent } from './add-artist/add-artist.component';
     AddNewSongComponent,
     RegisterComponent,
     SearchComponent,
-    AddArtistComponent
+    AddArtistComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forRoot(AppRouter)
+    RouterModule.forRoot(AppRouter),
+    JwtModule.forRoot(JWT_Module_Options)
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthenticationInterceptor, multi:true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
