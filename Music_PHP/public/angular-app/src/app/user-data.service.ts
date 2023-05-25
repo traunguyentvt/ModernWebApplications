@@ -11,17 +11,17 @@ import { environment } from 'src/environments/environment';
 })
 export class UserDataService {
 
-  // private _baseUrl: string = environment.API_BASE_URL;
+  // private _baseUrl: string= environment.API_BASE_URL;
 
   constructor(private _http: HttpClient) {}
 
   public register(user: User): Observable<User> {
-    const url = environment.API_URL_USERS;
+    const url= environment.API_URL_USERS;
     return this._http.post<User>(url, user.toJSON());
   }
 
   public login(user: Credential): Observable<Token> {
-    const url = environment.API_URL_USERS_LOGIN;
+    const url= environment.API_URL_USERS_LOGIN;
     return this._http.post<Token>(url, user.toJSON());
   }
 

@@ -9,12 +9,12 @@ import { environment } from 'src/environments/environment';
 export class PaginationComponent {
 
   @Input()
-  isEndedPage: boolean = environment.DEFAULT_FALSE;
+  isEndedPage: boolean= environment.DEFAULT_FALSE;
   @Input()
-  offset: number = environment.ZERO;
+  offset: number= environment.ZERO;
 
   @Output()
-  addEvent: EventEmitter<number> = new EventEmitter<number>();
+  addEvent: EventEmitter<number>= new EventEmitter<number>();
 
   constructor() {}
 
@@ -26,7 +26,7 @@ export class PaginationComponent {
     if (this.offset <= environment.ZERO) {
       return;
     }
-    this.offset -= 1;
+    this.offset-= 1;
     this.emitOffset();
   }
 
@@ -34,7 +34,7 @@ export class PaginationComponent {
     if (this.isEndedPage) {
       return;
     }
-    this.offset += 1;
+    this.offset+= 1;
     this.emitOffset();
   }
 
